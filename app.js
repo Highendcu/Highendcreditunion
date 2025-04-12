@@ -22,11 +22,23 @@ app.use((req, res, next) => {
 // Helpers
 function loadUsers() {
   if (!fs.existsSync(USERS_FILE)) return [];
-  return JSON.parse(fs.readFileSync(USERS_FILE));
+  let usersData = fs.readFileSync(USERS_FILE);
+  console.log("Loaded users data:", usersData); // Debug: Check the raw data
+  try {
+    return JSON.parse(usersData); // Parse the JSON correctly
+  } catch (error) {
+    console.error("Error parsing users JSON:", error); // Log parsing error if any
+    return [];
+  }
 }
 
 function saveUsers(users) {
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+  try {
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+    console.log("Users saved successfully.");
+  } catch (error) {
+    console.error("Error saving users to file:", error);
+  }
 }
 
 function generateAccountNumber() {
@@ -60,6 +72,7 @@ app.post("/register", (req, res) => {
   }
 
   const users = loadUsers();
+  console.log("Users before registration:", users); // Debug: Check current users list
 
   if (users.find(u => u.email === email)) {
     return res.status(400).json({ success: false, message: "Email already registered" });
