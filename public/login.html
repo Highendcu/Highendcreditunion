@@ -1,0 +1,335 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High End CU - Member Sign On</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+    <style>
+        :root {
+            --primary-blue: #00447C;
+            --secondary-blue: #0066A1;
+            --accent-gold: #C5A047;
+            --off-white: #F8F9FC;
+            --slate-gray: #4A5C6C;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        .nav-buttons {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            gap: 0.5rem;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .auth-header {
+            color: var(--primary-blue);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            border: 2px solid rgba(0, 68, 124, 0.1);
+            border-radius: 8px;
+            padding: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 68, 124, 0.15);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--slate-gray);
+            z-index: 2;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            border: none;
+            padding: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-blue);
+            transform: translateY(-1px);
+        }
+
+        .btn-call {
+            font-size: 0.9rem;
+            color: var(--off-white);
+            background: transparent;
+            border: 1px solid var(--off-white);
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-call:hover {
+            background: var(--off-white);
+            color: var(--primary-blue);
+            transform: translateY(-1px);
+        }
+
+        .dropdown-menu {
+            min-width: 200px;
+        }
+
+        /* Bottom Links Section */
+        .bottom-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 1000px;
+            flex-wrap: wrap;
+        }
+
+        .bottom-links div {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .bottom-links div {
+                width: 18%;
+                margin: 1rem;
+            }
+        }
+
+        .bottom-links h5 {
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 0.8rem;
+        }
+
+        .bottom-links p {
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons">
+        <a href="index.html" class="btn btn-outline-light">Home</a>
+        <a href="register.html" class="btn btn-outline-light">Credit Card</a>
+        <a href="register.html" class="btn btn-outline-light">Open Account</a>
+        <div class="dropdown">
+            <button class="btn btn-call dropdown-toggle" type="button" 
+                    id="dropdownMenuButton" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
+                Call >>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="#">Customer Service</a></li>
+                <li><a class="dropdown-item" href="#" id="adminOption">Admin</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="auth-card">
+        <h2 class="auth-header text-center">Secure Member Sign On</h2>
+
+        <form id="loginForm" novalidate>
+            <div class="mb-3 position-relative">
+                <label class="form-label" for="usernameInput">Username</label>
+                <input type="email" class="form-control" id="usernameInput" placeholder="name@example.com" required>
+            </div>
+
+            <div class="mb-3 position-relative">
+                <label class="form-label" for="passwordInput">Password</label>
+                <input type="password" class="form-control" id="passwordInput" placeholder="••••••••" required>
+                <i class="fas fa-eye-slash password-toggle" role="button" onclick="togglePasswordVisibility()"></i>
+            </div>
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary">Sign On</button>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="password-reset.html">Forgot Password?</a>
+                <a href="register.html">Enroll Now</a>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- Admin PIN Modal -->
+    <div class="modal fade" id="adminPinModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Admin Access PIN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Enter Admin PIN:</label>
+                        <input type="password" class="form-control" id="adminPin" required>
+                        <div class="invalid-feedback">Invalid PIN</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitPin">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Links -->
+    <div class="bottom-links">
+        <div>
+            <h5>Banking Services</h5>
+            <p>Checking Accounts</p>
+            <p>Savings Accounts</p>
+            <p>Credit Cards</p>
+            <p>Loans</p>
+            <p>Mortgages</p>
+        </div>
+        <div>
+            <h5>Digital Banking</h5>
+            <p>Mobile Banking</p>
+            <p>Online Bill Pay</p>
+            <p>Zelle Payments</p>
+            <p>Wire Transfers</p>
+            <p>Account Alerts</p>
+        </div>
+        <div>
+            <h5>About Us</h5>
+            <p>Our History</p>
+            <p>Leadership</p>
+            <p>Careers</p>
+            <p>Investor Relations</p>
+            <p>Community</p>
+        </div>
+        <div>
+            <h5>Support</h5>
+            <p>Contact Us</p>
+            <p>Branch Locator</p>
+            <p>ATM Network</p>
+            <p>FAQs</p>
+            <p>Security Center</p>
+        </div>
+        <div>
+            <h5>Legal</h5>
+            <p>Privacy Policy</p>
+            <p>Terms of Service</p>
+            <p>Disclosures</p>
+            <p>Accessibility</p>
+            <p>Regulatory Info</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        // Ensure dropdown works with Bootstrap 5
+        const dropdown = new bootstrap.Dropdown(document.getElementById('dropdownMenuButton'));
+
+        // Admin PIN Modal
+        document.getElementById('adminOption').addEventListener('click', function(e) {
+            e.preventDefault();
+            new bootstrap.Modal(document.getElementById('adminPinModal')).show();
+        });
+
+        document.getElementById('submitPin').addEventListener('click', function() {
+            const pinInput = document.getElementById('adminPin');
+            if (pinInput.value === '123456789') {
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                pinInput.classList.add('is-invalid');
+            }
+        });
+
+        // Enhanced form validation with credentials check
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
+			
+			
+
+            // Check hardcoded admin
+            if (email === 'Admin@admin.com' && password === '12345') {
+                redirectToDashboard('user-dashboard.html');
+                return;
+            }
+
+            // Check registered users
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const validUser = users.find(user => user.email === email && user.password === password);
+
+            if (validUser) {
+			localStorage.setItem('loggedInUser', JSON.stringify(user));
+			window.location.href = 'user-dashboard.html';  // Redirect to the user's dashboard
+			} else {
+               alert('Invalid email or password!');
+            }
+        });
+
+        function redirectToDashboard(path) {
+            const submitBtn = document.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<div class="spinner-border spinner-border-sm"></div> Signing in...';
+            setTimeout(() => window.location.href = path, 1500);
+        }
+
+        function showLoginError() {
+            document.getElementById('usernameInput').classList.add('is-invalid');
+            document.getElementById('passwordInput').classList.add('is-invalid');
+            alert('Invalid credentials');
+        }
+
+        // Password Visibility Toggle
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const toggleIcon = document.querySelector('.password-toggle');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+</body>
+</html>

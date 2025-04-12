@@ -1,0 +1,156 @@
+:root {
+    --primary-blue: #0047AB;
+    --secondary-blue: #0066CC;
+    --accent-gold: #FFD700;
+    --dark-bg: #0F1C3F;
+    --button-padding: 0.75rem 1.25rem; /* Adjusted padding for buttons */
+    --font-size-base: 1rem;
+}
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Center and adjust the padding for auth-related pages */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dark-bg);
+}
+
+.auth-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Feature Card Hover Effect */
+.feature-card {
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Balance Display */
+.balance {
+    font-size: 1.8rem; /* Slightly smaller font size */
+    font-weight: bold;
+    color: var(--primary-blue);
+}
+
+.account-number {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Rate Badge Styling */
+.rate-badge {
+    background: rgba(0, 68, 124, 0.1);
+    color: var(--primary-blue);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+/* Security Logo styling */
+.security-logo {
+    color: var(--primary-blue);
+    font-weight: 500;
+    margin-top: 1rem;
+    opacity: 0.9;
+}
+
+.security-logo i {
+    margin-right: 8px;
+    color: var(--accent-gold);
+}
+
+/* Button Improvements */
+button, .btn {
+    padding: var(--button-padding);
+    font-size: 1rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover, .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Adjusting sizes of specific buttons */
+#logoutBtn {
+    font-size: 1.1rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+}
+
+#nextPageBtn, #prevPageBtn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+/* Table Adjustments for smaller elements */
+.table th, .table td {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.table {
+    font-size: 0.95rem;
+}
+
+/* Make elements slightly smaller and more compact for better spacing */
+.card-body {
+    padding: 1rem;
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 1rem;
+}
+
+.navbar-brand img {
+    width: 150px; /* Adjusted logo size */
+    height: auto;
+}
+
+/* Adjust for other areas */
+.navbar-nav .nav-item {
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 600;
+}
+
+.container {
+    padding: 3rem 2rem;
+}
+
+/* Adjust footer sections */
+.bottom-links h5 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.bottom-links p {
+    font-size: 0.9rem;
+    margin: 5px 0;
+}

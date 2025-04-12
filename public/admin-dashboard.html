@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+	.card { margin: 20px 0; }
+    .card-header { background-color: #f3f4f6; padding: 10px; }
+    .card-body { padding: 15px; }
+	
+        body {
+            background-color: #343a40;
+            color: white;
+        }
+        .btn-admin {
+            background-color: #0062cc;
+            color: white;
+        }
+        .btn-admin:hover {
+            background-color: #004ba0;
+        }
+        .text-accent {
+            color: #ffc107;
+        }
+        .dashboard-container {
+            padding: 20px;
+        }
+        .dashboard-card {
+            background-color: #495057;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .balance-info {
+            font-size: 1.2em;
+        }
+        .bottom-links {
+            background-color: #343a40;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            border-top: 2px solid #ccc;
+        }
+        .bottom-links h5 {
+            color: #ffc107;
+        }
+        .bottom-links div {
+            width: 22%;
+        }
+        .pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .form-control {
+            background-color: #495057;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Buttons -->
+    <div class="d-flex justify-content-between mb-4">
+        <a href="index.html" class="btn btn-admin">
+            <i class="fas fa-home me-2"></i>Home
+        </a>
+        <a href="index.html" class="btn btn-admin">
+            <i class="fas fa-sign-out-alt me-2"></i>Log Out
+        </a>
+    </div>
+	<div class="container mx-auto p-5">
+    <h1 class="text-3xl font-bold text-center">Admin Dashboard</h1>
+
+    <!-- User Management -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="text-xl font-semibold">Manage Users</h2>
+      </div>
+      <div class="card-body">
+        <table class="table-auto w-full text-left">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">ID</th>
+              <th class="px-4 py-2">Name</th>
+              <th class="px-4 py-2">Email</th>
+              <th class="px-4 py-2">Balance</th>
+              <th class="px-4 py-2">Status</th>
+              <th class="px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="user-table">
+            <!-- Dynamic user rows will be added here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- User Actions -->
+    <div id="user-actions" class="card mt-4 hidden">
+      <div class="card-header">
+        <h2 class="text-xl font-semibold">User Actions</h2>
+      </div>
+      <div class="card-body">
+        <form id="user-action-form">
+          <label class="block mb-2">Select Action</label>
+          <select id="action" class="w-full p-2 mb-4">
+            <option value="suspend">Suspend/Unsuspend User</option>
+            <option value="change-password">Change User Password</option>
+            <option value="update-balance">Update User Balance</option>
+          </select>
+
+          <div id="user-id-field" class="mb-4">
+            <label class="block mb-2">Enter User ID</label>
+            <input type="text" id="user-id" class="w-full p-2" required />
+          </div>
+
+          <div id="balance-field" class="mb-4 hidden">
+            <label class="block mb-2">Balance (Amount to Add/Reduce)</label>
+            <input type="number" id="balance-amount" class="w-full p-2" />
+          </div>
+
+          <div id="password-field" class="mb-4 hidden">
+            <label class="block mb-2">New Password</label>
+            <input type="password" id="new-password" class="w-full p-2" />
+          </div>
+
+          <button type="submit" class="bg-blue-500 text-white p-2 rounded">Execute Action</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Admin Dashboard Card -->
+        <div class="dashboard-card">
+            <h2 class="dashboard-header text-center">Administrator Dashboard</h2>
+            <div class="balance-info text-center">
+                System Balance: <br><strong>$2,458,763,829.47</strong>
+            </div>
+            
+            <!-- Fund Transfer Section -->
+            <div class="card bg-transparent border-secondary mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-accent">Fund Transfer System</h5>
+                    <form id="transferForm">
+                        <div class="mb-3">
+                            <label class="form-label">Account Number</label>
+                            <input type="text" class="form-control bg-transparent text-white" id="accountNumber" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Account Holder Name</label>
+                            <input type="text" class="form-control bg-transparent text-white" id="accountName" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Account Type</label>
+                                <select class="form-select bg-transparent text-white" id="accountType">
+                                    <option value="checking">Checking</option>
+                                    <option value="savings">Savings</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Transfer Amount</label>
+                                <input type="number" class="form-control bg-transparent text-white" id="transferAmount" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Transfer Memo</label>
+                            <textarea class="form-control bg-transparent text-white" rows="2" id="transferMemo"></textarea>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-admin">
+                                <i class="fas fa-exchange-alt me-2"></i> Execute Transfer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Quick Transfer Button -->
+            <div class="d-grid mt-4">
+                <button class="btn btn-admin" data-bs-toggle="modal" data-bs-target="#quickTransferModal">
+                    <i class="fas fa-arrow-right me-2"></i> Quick Transfer
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Transfer Modal -->
+        <div class="modal fade" id="quickTransferModal" tabindex="-1" aria-labelledby="quickTransferModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="quickTransferModalLabel">Quick External Transfer</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="externalAccount" class="form-label">External Account Number</label>
+                            <input type="text" class="form-control" id="externalAccount" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="transferAmountQuick" class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="transferAmountQuick" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="transferPin" class="form-label">Enter 4-Digit PIN</label>
+                            <input type="password" class="form-control" id="transferPin" maxlength="4" required>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="button" class="btn btn-admin" id="confirmQuickTransfer">
+                                <i class="fas fa-check me-2"></i> Confirm Transfer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Card -->
+        <div class="dashboard-card">
+            <h5 class="dashboard-header">Transaction Monitor</h5>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTable">
+                        <!-- Transactions will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination-controls">
+                <button class="btn btn-admin" id="previousPage">Previous</button>
+                <span id="pageInfo">Page 1 of 1</span>
+                <button class="btn btn-admin" id="nextPage">Next</button>
+            </div>
+        </div>
+
+        <!-- Enhanced User Management Card -->
+        <div class="dashboard-card">
+            <h5 class="dashboard-header">User Accounts</h5>
+            <div class="mb-3">
+                <input type="text" class="form-control bg-transparent text-white" id="searchInput" placeholder="Search users...">
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Balance</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTable">
+                        <!-- User data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Links Section -->
+    <div class="bottom-links">
+        <div>
+            <h5>Admin Tools</h5>
+            <p>User Management</p>
+            <p>Transaction Audit</p>
+            <p>System Settings</p>
+            <p>Security Controls</p>
+            <p>Reports</p>
+        </div>
+        <div>
+            <h5>Banking Services</h5>
+            <p>Account Management</p>
+            <p>Fund Transfers</p>
+            <p>Transaction Monitoring</p>
+            <p>Fraud Detection</p>
+            <p>Compliance</p>
+        </div>
+        <div>
+            <h5>Support</h5>
+            <p>Admin Documentation</p>
+            <p>System Status</p>
+            <p>Contact Engineers</p>
+            <p>Training Resources</p>
+            <p>Security Protocols</p>
+        </div>
+        <div>
+            <h5>Legal</h5>
+            <p>Privacy Policy</p>
+            <p>Terms of Service</p>
+            <p>Compliance Docs</p>
+            <p>Audit Trails</p>
+            <p>Regulatory Info</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+    <script>
+        // Simulated system balance stored in localStorage
+        const systemBalance = 2458763829.47;
+        document.querySelector('.balance-info strong').textContent = `$${systemBalance.toLocaleString()}`;
+
+        // Quick Transfer PIN validation
+        const quickTransferPin = "1234"; // Set your admin pin here
+
+        document.getElementById('confirmQuickTransfer').addEventListener('click', function() {
+            const pin = document.getElementById('transferPin').value;
+            if (pin === quickTransferPin) {
+                const externalAccount = document.getElementById('externalAccount').value;
+                const amount = parseFloat(document.getElementById('transferAmountQuick').value);
+
+                if (!externalAccount || !amount || isNaN(amount)) {
+                    alert('Please fill in all fields correctly.');
+                    return;
+                }
+
+                // Simulate the external transfer
+                alert(`Quick transfer of $${amount} to account ${externalAccount} completed successfully!`);
+
+                // Close the modal
+                const modal = new bootstrap.Modal(document.getElementById('quickTransferModal'));
+                modal.hide();
+
+                // Reset the form
+                document.getElementById('externalAccount').value = '';
+                document.getElementById('transferAmountQuick').value = '';
+                document.getElementById('transferPin').value = '';
+            } else {
+                alert('Invalid PIN. Please try again.');
+            }
+        });
+		
+		    // Fetch all users
+    async function fetchUsers() {
+      const response = await fetch('/api/users');
+      const users = await response.json();
+      const tableBody = document.getElementById('user-table');
+      tableBody.innerHTML = '';
+
+      users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="px-4 py-2">${user.id}</td>
+          <td class="px-4 py-2">${user.name}</td>
+          <td class="px-4 py-2">${user.email}</td>
+          <td class="px-4 py-2">${user.balance}</td>
+          <td class="px-4 py-2">${user.status}</td>
+          <td class="px-4 py-2">
+            <button class="text-blue-500" onclick="editUser('${user.id}')">Edit</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Handle User Action Form Submission
+    document.getElementById('user-action-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const userId = document.getElementById('user-id').value;
+      const action = document.getElementById('action').value;
+      let data = {};
+
+      if (action === 'suspend') {
+        const response = await fetch(`/api/users/${userId}/toggle-suspend`, { method: 'POST' });
+        const result = await response.json();
+        alert(result.message);
+      } else if (action === 'change-password') {
+        const newPassword = document.getElementById('new-password').value;
+        const response = await fetch(`/api/users/${userId}/change-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ newPassword })
+        });
+        const result = await response.json();
+        alert(result.message);
+      } else if (action === 'update-balance') {
+        const amount = document.getElementById('balance-amount').value;
+        const response = await fetch(`/api/users/${userId}/update-balance`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount })
+        });
+        const result = await response.json();
+        alert(result.message);
+      }
+
+      // Reset the form and refresh the user list
+      document.getElementById('user-action-form').reset();
+      fetchUsers();
+    });
+
+    // Edit user action (to fill fields)
+    function editUser(userId) {
+      document.getElementById('user-id').value = userId;
+      document.getElementById('user-actions').classList.remove('hidden');
+    }
+
+    // Fetch users when the page loads
+    window.onload = fetchUsers;
+
+        // Sample user data
+        const users = [
+            {
+                name: "John Doe",
+                checking: "••••7890",
+                savings: "••••4321",
+                email: "john@example.com",
+                checkingBalance: 1786389.47,
+                savingsBalance: 8763838.74
+            },
+            {
+                name: "Jane Smith",
+                checking: "••••6543",
+                savings: "••••9876",
+                email: "jane@example.com",
+                checkingBalance: 2458763.12,
+                savingsBalance: 1234567.89
+            }
+        ];
+
+        // Transaction data
+        let transactions = [
+            {
+                date: "2025-04-01",
+                account: "••••7890",
+                type: "Checking",
+                amount: 50000.00,
+                description: "Loan Payment"
+            },
+            {
+                date: "2025-04-02",
+                account: "••••4321",
+                type: "Savings",
+                amount: -10000.00,
+                description: "Deposit Refund"
+            }
+        ];
+
+        // Initialize tables
+        function initUserTable() {
+            const tbody = document.getElementById('userTable');
+            tbody.innerHTML = users.map(user => `
+                <tr>
+                    <td>${user.name}</td>
+                    <td>${user.checking}<br>${user.savings}</td>
+                    <td>Checking<br>Savings</td>
+                    <td>$${user.checkingBalance.toLocaleString()}<br>$${user.savingsBalance.toLocaleString()}</td>
+                    <td>${user.email}</td>
+                </tr>
+            `).join('');
+        }
+
+        function updateTransactionTable() {
+            const tbody = document.getElementById('transactionTable');
+            tbody.innerHTML = transactions.map(trans => `
+                <tr>
+                    <td>${trans.date}</td>
+                    <td>${trans.account}</td>
+                    <td>${trans.type}</td>
+                    <td class="${trans.amount < 0 ? 'text-danger' : 'text-success'}">
+                        $${Math.abs(trans.amount).toLocaleString()}
+                    </td>
+                    <td>${trans.description}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Transfer functionality
+        document.getElementById('transferForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const accountNumber = document.getElementById('accountNumber').value;
+            const accountName = document.getElementById('accountName').value;
+            const accountType = document.getElementById('accountType').value;
+            const amount = parseFloat(document.getElementById('transferAmount').value);
+            const memo = document.getElementById('transferMemo').value;
+
+            if (!accountNumber || !accountName || !amount) {
+                alert('Please fill all required fields');
+                return;
+            }
+
+            // Find user account
+            const user = users.find(u => 
+                u.checking === accountNumber || u.savings === accountNumber
+            );
+
+            if (!user) {
+                alert('Account not found');
+                return;
+            }
+
+            // Update balance
+            if (accountType === 'checking') {
+                user.checkingBalance += amount;
+            } else {
+                user.savingsBalance += amount;
+            }
+
+            // Record transaction
+            const newTransaction = {
+                date: new Date().toISOString().split('T')[0],
+                account: accountNumber,
+                type: accountType.charAt(0).toUpperCase() + accountType.slice(1),
+                amount: amount,
+                description: memo || "Admin Transfer"
+            };
+
+            transactions.unshift(newTransaction);
+            
+            // Update tables
+            initUserTable();
+            updateTransactionTable();
+            
+            // Clear form
+            this.reset();
+            alert('Transfer completed successfully!');
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#userTable tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Pagination
+        let currentPage = 1;
+        const transactionsPerPage = 5;
+        
+        function updatePagination() {
+            const totalPages = Math.ceil(transactions.length / transactionsPerPage);
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById('previousPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+        }
+
+        document.getElementById('previousPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updateTransactionTable();
+                updatePagination();
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            const totalPages = Math.ceil(transactions.length / transactionsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTransactionTable();
+                updatePagination();
+            }
+        });
+
+        // Initial setup
+        initUserTable();
+        updateTransactionTable();
+        updatePagination();
+    </script>
+</body>
+</html>

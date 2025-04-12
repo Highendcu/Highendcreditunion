@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>High End Credit Union</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    :root {
+      --primary-blue: #00447C;
+      --secondary-blue: #0066A1;
+      --accent-gold: #C5A047;
+      --off-white: #F8F9FC;
+      --slate-gray: #4A5C6C;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      color: var(--off-white);
+      font-family: 'Arial', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: var(--off-white);
+      padding: 1rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--primary-blue) !important;
+      font-size: 1.5rem;
+    }
+
+    .motto {
+      color: var(--secondary-blue);
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    .nav-link {
+      color: var(--primary-blue) !important;
+      font-weight: 500;
+    }
+
+    .btn-login {
+      background-color: var(--accent-gold);
+      color: var(--primary-blue);
+      border: none;
+      font-weight: 500;
+      padding: 0.5rem 1.5rem;
+    }
+
+    .btn-login:hover {
+      background-color: var(--primary-blue);
+      color: var(--off-white);
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 3rem 0;
+    }
+
+    .sign-in-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      height: fit-content;
+    }
+
+    .sign-in-box h3 {
+      color: var(--accent-gold);
+      margin-bottom: 1.5rem;
+      font-size: 1.75rem;
+    }
+
+    .form-control {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--off-white);
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-signin {
+      background-color: var(--accent-gold);
+      color: var(--primary-blue);
+      width: 100%;
+      padding: 0.75rem;
+      font-weight: 600;
+      border: none;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-signin:hover {
+      background-color: var(--primary-blue);
+      color: var(--off-white);
+      transform: translateY(-2px);
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+    }
+
+    .feature-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .account-recommendation {
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      border: 2px solid var(--accent-gold);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .rate-dashboard {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 2rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <div>
+      <a class="navbar-brand" href="/">
+        <!-- <img src="/images/logo.png" alt="High End CU Logo" style="height: 40px;"> -->
+        High End CU
+      </a>
+      <span class="motto d-block mt-1">Your Financial Success, Our Priority</span>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Products</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Checking</a></li>
+            <li><a class="dropdown-item" href="#">Savings</a></li>
+            <li><a class="dropdown-item" href="#">Loans</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#">Support</a></li>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a href="login.html" class="btn btn-login me-2">Sign On</a>
+          <a href="register.html" class="btn btn-login">Enroll</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+  <div class="container">
+    <div class="row g-5">
+      <!-- LEFT COLUMN -->
+      <div class="col-lg-7">
+        <section class="account-recommendation">
+          <h2 class="text-accent-gold mb-4">Start Banking With Us</h2>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="card feature-card">
+                <div class="card-body">
+                  <h3 class="h5">Platinum Checking</h3>
+                  <p class="text-muted">2.15% APY • No Monthly Fees</p>
+                  <a href="register.html" class="btn btn-signin">Open Account</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card feature-card">
+                <div class="card-body">
+                  <h3 class="h5">High-Yield Savings</h3>
+                  <p class="text-muted">3.75% APY • FDIC Insured</p>
+                  <a href="register.html" class="btn btn-signin">Open Account</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+                <!-- Rate Dashboard -->
+                <section class="rate-dashboard">
+                    <h3 class="text-accent-gold mb-4">Current Rates</h3>
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>30-Year Fixed Mortgage</td>
+                                    <td class="text-end">6.125%</td>
+                                </tr>
+                                <tr>
+                                    <td>1-Year CD</td>
+                                    <td class="text-end">4.25%</td>
+                                </tr>
+                                <tr>
+                                    <td>Personal Loans</td>
+                                    <td class="text-end">7.99% - 15.99%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-5">
+                <section class="sign-in-box">
+                    <h3 class="text-center mb-4">Secure Sign In</h3>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <input type="text" class="form-control form-control-lg" placeholder="Username" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="password" class="form-control form-control-lg" placeholder="Password" required>
+                        </div>
+                        <button type="submit" class="btn btn-signin">Sign In</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+
+        <!-- Business Features -->
+        <section class="business-features">
+            <h2 class="text-accent-gold mb-5 text-center">Business Banking Solutions</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body">
+                            <h3 class="h5">Treasury Services</h3>
+                            <p class="text-muted">Advanced cash management solutions</p>
+                            <button class="btn btn-outline-light btn-sm" onclick="window.location.href='register.html'">Open Account</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body">
+                            <h3 class="h5">Commercial Lending</h3>
+                            <p class="text-muted">Custom financing solutions</p>
+                            <button class="btn btn-outline-light btn-sm" onclick="window.location.href='register.html'">Open Account</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body">
+                            <h3 class="h5">Global Banking</h3>
+                            <p class="text-muted">International trade services</p>
+                            <button class="btn btn-outline-light btn-sm" onclick="window.location.href='register.html'">Open Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Links -->
+    <footer class="container">
+        <div class="bottom-links">
+            <div>
+                <h5>Financial Tools</h5>
+                <a href="/budgeting">Budget Planner</a>
+                <a href="/debt-management">Debt Calculator</a>
+                <a href="/retirement">Retirement Planner</a>
+                <a href="/investment">Investment Simulator</a>
+            </div>
+            <div>
+                <h5>Security Center</h5>
+                <a href="/fraud-prevention">Fraud Prevention</a>
+                <a href="/identity-theft">Identity Protection</a>
+                <a href="/security-alerts">Security Alerts</a>
+                <a href="/encryption">Data Encryption</a>
+            </div>
+            <div>
+                <h5>Customer Service</h5>
+                <a href="/contact">Contact Us</a>
+                <a href="/locations">Branch Locations</a>
+                <a href="/support">24/7 Support</a>
+                <a href="/faq">FAQ</a>
+            </div>
+            <div>
+                <h5>About Us</h5>
+                <a href="/about">Our Story</a>
+                <a href="/leadership">Leadership</a>
+                <a href="/careers">Careers</a>
+                <a href="/investors">Investors</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = this.querySelector('input[type="text"]').value;
+            const password = this.querySelector('input[type="password"]').value;
+
+            if (!username || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            localStorage.setItem('bankData', JSON.stringify({
+                checkingBalance: 26550228.21,
+                savingsBalance: 26550228.21
+            }));
+
+            window.location.href = 'user-dashboard.html';
+        });
+    </script>
+</div>
+</body>
+</html>
