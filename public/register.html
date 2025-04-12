@@ -417,21 +417,22 @@
         </div>
       </div>
 
-      <!-- Step 5: Credentials Setup -->
-      <div class="form-section" id="credentials">
-        <h2 class="auth-header text-center">Create Login Credentials</h2>
-        <form id="credentialForm" novalidate>
-          <div class="mb-3">
-            <label class="form-label">Username *</label>
-            <input type="text" class="form-control" id="username" required>
-            <div class="invalid-feedback">Please choose a username</div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Password *</label>
-            <input type="password" class="form-control" id="password" required>
-            <div class="invalid-feedback">
-              Password must be at least 8 characters with 1 uppercase and 1 special character
-            </div>
+  <!-- Step 5: Credentials Setup -->
+  <div class="form-section" id="credentials">
+    <h2 class="auth-header text-center">Create Login Credentials</h2>
+    <form id="credentialForm" novalidate>
+      <div class="mb-3">
+        <label class="form-label">Username *</label>
+        <input type="text" class="form-control" id="username" required>
+        <div class="invalid-feedback">Please choose a username</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password *</label>
+        <input type="password" class="form-control" id="password" required>
+        <div class="invalid-feedback">
+          Password must be at least 8 characters with 1 uppercase and 1 special character
+        </div>
+      </div>
           </div>
           <div class="text-center">
             <button class="btn btn-outline-primary me-3" type="button" onclick="showPreviousSection()">
@@ -596,23 +597,11 @@
       form.classList.add('was-validated');
       return;
     }
-    document.getElementById('registrationForm').requestSubmit(); // trigger final submit
-  }
-
-  // Toggle account card selection
-  document.querySelectorAll('.account-card').forEach(card => {
-    card.addEventListener('click', function () {
-      this.classList.toggle('selected');
-    });
-  });
-
-  // Registration form submit to backend
-  document.getElementById('registrationForm').addEventListener('submit', function(e) {
-    e.preventDefault();
 
     const name = document.getElementById('firstName').value + " " + document.getElementById('lastName').value;
     const email = document.getElementById('email').value;
-    const password = document.getElementById('newPassword').value;
+    // CORRECTED LINE: Changed 'newPassword' to 'password'
+    const password = document.getElementById('password').value;
     const accountTypes = selectedAccounts.length > 0 ? selectedAccounts : ['checking'];
     const balance = 0;
 
@@ -625,7 +614,7 @@
     .then(data => {
       if (data.success) {
         alert('Registration successful!');
-        window.location.href = 'user-dashboard.html'; // ✅ Redirect to dashboard now
+        window.location.href = 'user-dashboard.html';
       } else {
         alert(data.message || 'Registration failed. Try again.');
       }
@@ -634,6 +623,15 @@
       console.error('Error:', err);
       alert('Something went wrong.');
     });
+  }
+
+  // Toggle account card selection
+  document.querySelectorAll('.account-card').forEach(card => {
+    card.addEventListener('click', function () {
+      this.classList.toggle('selected');
+    });
   });
 </script>
+</body>
+</html>
 
