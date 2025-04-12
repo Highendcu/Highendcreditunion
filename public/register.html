@@ -625,7 +625,7 @@
     .then(data => {
       if (data.success) {
         alert('Registration successful!');
-        window.location.href = 'login.html';
+        window.location.href = 'user-dashboard.html'; // ✅ Redirect to dashboard now
       } else {
         alert(data.message || 'Registration failed. Try again.');
       }
@@ -636,3 +636,4 @@
     });
   });
 </script>
+
