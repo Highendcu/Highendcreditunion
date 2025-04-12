@@ -11,6 +11,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
+// Force HTTPS on Render
+app.use((req, res, next) => {
+  if (req.headers["x-forwarded-proto"] !== "https") {
+    return res.redirect("https://" + req.headers.host + req.url);
+  }
+  next();
+});
+
 // Helpers
 function loadUsers() {
   if (!fs.existsSync(USERS_FILE)) return [];
@@ -38,9 +46,14 @@ app.get("/admin-dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-dashboard.html"));
 });
 
+app.get("/user-dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "user-dashboard.html"));
+});
+
 // Register new user
 app.post("/register", (req, res) => {
-  const { name, email, password, accountType } = req.body;
+  const { name, email, password, accountTypes } = req.body;
+  const accountType = accountTypes && accountTypes[0] || "checking";
 
   if (!name || !email || !password || !accountType) {
     return res.status(400).json({ success: false, message: "Missing required fields" });
@@ -48,10 +61,13 @@ app.post("/register", (req, res) => {
 
   const users = loadUsers();
 
+  if (users.find(u => u.email === email)) {
+    return res.status(400).json({ success: false, message: "Email already registered" });
+  }
+
   bcrypt.hash(password, 10, (err, hashedPassword) => {
     if (err) return res.status(500).json({ success: false, message: "Error hashing password" });
 
-    // Create new user structure
     const newUser = {
       id: Date.now().toString(),
       name,
@@ -73,7 +89,24 @@ app.post("/register", (req, res) => {
 
     users.push(newUser);
     saveUsers(users);
-    res.json({ success: true, message: "Registration success!" });
+    res.json({ success: true, message: "Registration success!", redirect: "/user-dashboard" });
+  });
+});
+
+// Login route
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  const users = loadUsers();
+
+  const user = users.find(u => u.email === email);
+  if (!user) return res.status(401).json({ success: false, message: "Invalid credentials" });
+
+  bcrypt.compare(password, user.password, (err, result) => {
+    if (result) {
+      res.json({ success: true, user });
+    } else {
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
   });
 });
 
