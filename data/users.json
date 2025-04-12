@@ -1,3 +1,22 @@
 {
-  "users": []
+  "users": [
+    {
+      "id": "1633031532000",
+      "name": "John Doe",
+      "email": "johndoe@example.com",
+      "password": "$2a$10$zFr2DZlUGcK7t5r09V0y9.Ih8IkQy6WwthvJwNzdZ0rcOn8h33jCm",  // Hashed password (use bcrypt to generate)
+      "status": "active",
+      "checking": {
+        "accountNumber": "1234567890",
+        "balance": 1000,
+        "transactions": []
+      },
+      "savings": {
+        "accountNumber": "9876543210",
+        "balance": 5000,
+        "transactions": []
+      },
+      "selectedAccountType": "checking"
+    }
+  ]
 }

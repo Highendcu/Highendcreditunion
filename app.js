@@ -21,16 +21,17 @@ app.use((req, res, next) => {
 
 // Helpers
 function loadUsers() {
-  if (!fs.existsSync(USERS_FILE)) return [];
-  let usersData = fs.readFileSync(USERS_FILE);
-  console.log("Loaded users data:", usersData); // Debug: Check the raw data
+  if (!fs.existsSync(USERS_FILE)) return { users: [] }; // Ensure there's a users key even if file is empty
+  
+  const rawData = fs.readFileSync(USERS_FILE); // Read the file data
   try {
-    return JSON.parse(usersData); // Parse the JSON correctly
+    return JSON.parse(rawData); // Parse JSON content
   } catch (error) {
-    console.error("Error parsing users JSON:", error); // Log parsing error if any
-    return [];
+    console.error("Error parsing JSON:", error);
+    return { users: [] }; // If parsing fails, return an empty array
   }
 }
+
 
 function saveUsers(users) {
   try {
