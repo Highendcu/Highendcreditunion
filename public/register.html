@@ -514,7 +514,6 @@
       yearSelect.innerHTML += `<option value="${i}">${i}</option>`;
     }
 
-    // Country-State toggle
     const countrySelect = document.getElementById('country');
     const stateField = document.getElementById('stateField');
     const stateSelect = document.getElementById('state');
@@ -536,7 +535,6 @@
       stateSelect.innerHTML += `<option value="${state}">${state}</option>`;
     });
 
-    // 🧠 Restore progress if available
     const savedForm = JSON.parse(localStorage.getItem('signupProgress') || '{}');
     for (const [key, value] of Object.entries(savedForm)) {
       const input = document.getElementById(key);
@@ -546,7 +544,6 @@
       }
     }
 
-    // 🧠 Restore selected accounts
     if (savedForm.selectedAccounts) {
       selectedAccounts = savedForm.selectedAccounts;
       selectedAccounts.forEach(type => {
@@ -607,8 +604,9 @@
       alert('Please agree to the Terms and Privacy Policy');
       return;
     }
-    document.getElementById('userEmail').textContent = document.getElementById('email').value;
-    showNextSection('emailVerification');
+    const email = document.getElementById('email').value;
+    document.getElementById('userEmail').textContent = email;
+    setTimeout(() => showNextSection('emailVerification'), 300);
   }
 
   function completeSetup() {
@@ -620,28 +618,41 @@
 
     const name = document.getElementById('firstName').value + " " + document.getElementById('lastName').value;
     const email = document.getElementById('email').value;
+    const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    const accountTypes = selectedAccounts;
+    const selectedAccountType = selectedAccounts[0] || "checking";
 
-    fetch('/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password, accountTypes })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          localStorage.removeItem('signupProgress');
-          localStorage.setItem('loggedInUser', JSON.stringify(data.user));
-          window.location.href = data.redirect;
-        } else {
-          alert(data.message || 'Registration failed. Try again.');
-        }
-      })
-      .catch(err => {
-        console.error('Error:', err);
-        alert('Something went wrong.');
-      });
+    const user = {
+      id: Date.now().toString(),
+      name,
+      email,
+      username,
+      selectedAccountType,
+      status: "active"
+    };
+
+    localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+    const bankData = JSON.parse(localStorage.getItem('bankData') || '{}');
+    bankData[email] = {
+      checking: {
+        number: generateRandomAccountNumber(),
+        balance: 0,
+        transactions: []
+      },
+      savings: {
+        number: generateRandomAccountNumber(),
+        balance: 0,
+        transactions: []
+      }
+    };
+    localStorage.setItem('bankData', JSON.stringify(bankData));
+    localStorage.removeItem('signupProgress');
+    window.location.href = 'user-dashboard.html';
+  }
+
+  function generateRandomAccountNumber() {
+    return Math.floor(Math.random() * 9000000000 + 1000000000).toString();
   }
 
   function saveProgress() {
@@ -661,7 +672,6 @@
     localStorage.setItem('signupProgress', JSON.stringify(progress));
   }
 
-  // Toggle account cards
   document.querySelectorAll('.account-card').forEach(card => {
     card.addEventListener('click', function () {
       this.classList.toggle('selected');
