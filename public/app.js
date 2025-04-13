@@ -144,6 +144,17 @@ app.get("/api/users", (req, res) => {
   res.json(users);
 });
 
+app.get("/api/users/:id", (req, res) => {
+  const users = loadUsers();
+  const user = users.users.find(u => u.id === req.params.id);
+  if (user) {
+    const { password, ...safeUser } = user;
+    res.json(safeUser);
+  } else {
+    res.status(404).json({ message: "User not found" });
+  }
+});
+
 app.post("/api/users/:id/toggle-suspend", (req, res) => {
   const users = loadUsers();
   const user = users.find(u => u.id === req.params.id);

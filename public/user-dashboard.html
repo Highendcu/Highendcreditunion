@@ -246,26 +246,6 @@
 
             <!-- Right Column -->
             <div class="col-lg-4">
-                <!-- Quick Transfer -->
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
-                            <h5 class="card-title">Quick Transfer</h5>
-                            <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#transferModal">
-                                <i class="fas fa-exchange-alt me-2"></i>New
-                            </button>
-                        </div>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-0"></h6>
-                                    <small></small>
-                                </div>
-                                <span class="badge bg-primary"></span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Credit Score -->
                 <div class="card bg-primary text-white">
@@ -363,6 +343,22 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="accountDetailsModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Account Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="accountDetailsContent">
+          <!-- Dynamic content will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Wire Transfer Modal -->
@@ -506,43 +502,6 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Retrieve logged-in user from localStorage
-const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-
-if (!loggedInUser) {
-    // If no user is logged in, redirect to login page
-    window.location.href = 'login.html';
-}
-
-// Initialize or load bank data from localStorage
-let bankData = JSON.parse(localStorage.getItem('bankData')) || {};
-
-// Check if user data exists for the logged-in user
-if (!bankData[loggedInUser.email]) {
-    // If user data does not exist, initialize their account data with $0 balance and no transactions
-    bankData[loggedInUser.email] = {
-        checking: {
-            number: generateRandomAccountNumber(),
-            balance: 0.00, // $0 balance for checking
-            transactions: [] // No transactions initially
-        },
-        savings: {
-            number: generateRandomAccountNumber(),
-            balance: 0.00, // $0 balance for savings
-            transactions: [] // No transactions initially
-        }
-    };
-    // Save new user data to localStorage
-    localStorage.setItem('bankData', JSON.stringify(bankData));
-}
-
-// Load account data for the logged-in user
-const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-
-if (!loggedInUser) {
-  window.location.href = '/login';
-}
-
 // Add this fetch call at the start of the script
 fetch(`/api/users/${loggedInUser.id}`)
   .then(res => res.json())
@@ -555,6 +514,38 @@ fetch(`/api/users/${loggedInUser.id}`)
   .catch(err => {
     console.error('Error fetching user data:', err);
   });
+  
+// Retrieve logged-in user from localStorage
+const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+if (!loggedInUser) {
+    // If no user is logged in, redirect to login page
+    window.location.href = 'login.html';
+}
+
+// Check if user data exists for the logged-in user
+if (!bankData[loggedInUser.email]) {
+  bankData[loggedInUser.email] = {
+    checking: {
+      number: generateRandomAccountNumber(),
+      balance: 0.00,
+      transactions: []
+    },
+    savings: {
+      number: generateRandomAccountNumber(),
+      balance: 0.00,
+      transactions: []
+    }
+  };
+  localStorage.setItem('bankData', JSON.stringify(bankData));
+}
+
+// Load account data
+const accountData = bankData[loggedInUser.email];
+
+if (!loggedInUser) {
+  window.location.href = '/login';
+}
 
 // Update account number and balance displays
 document.querySelector('#checking-account-number').textContent = accountData.checking.number;
@@ -565,18 +556,6 @@ document.querySelector('#savings-balance').textContent = `$${accountData.savings
 // Update total balance
 const totalBalance = accountData.checking.balance + accountData.savings.balance;
 document.querySelector('.balance').textContent = `$${totalBalance.toFixed(2)}`;
-
-// Display transactions in the table
-const transactionList = document.querySelector('#transaction-list');
-accountData.checking.transactions.concat(accountData.savings.transactions).forEach(transaction => {
-    const transactionRow = document.createElement('tr');
-    transactionRow.innerHTML = `
-        <td>${transaction.date}</td>
-        <td>${transaction.description}</td>
-        <td>${transaction.amount}</td>
-    `;
-    transactionList.appendChild(transactionRow);
-});
 
 // Generate random account numbers
 function generateRandomAccountNumber() {
@@ -628,13 +607,50 @@ document.getElementById('internalTransferForm').addEventListener('submit', (e) =
     }
 });
 
-// Update the displayed balances
-function updateBalances() {
-    document.querySelector('#checking-balance').textContent = `$${accountData.checking.balance.toFixed(2)}`;
-    document.querySelector('#savings-balance').textContent = `$${accountData.savings.balance.toFixed(2)}`;
+// Update display function
+function updateDisplay() {
+  document.querySelector('#checking-account-number').textContent = accountData.checking.number;
+  document.querySelector('#savings-account-number').textContent = accountData.savings.number;
+  document.querySelector('#checking-balance').textContent = `$${accountData.checking.balance.toFixed(2)}`;
+  document.querySelector('#savings-balance').textContent = `$${accountData.savings.balance.toFixed(2)}`;
+  
+  const totalBalance = accountData.checking.balance + accountData.savings.balance;
+  document.querySelector('.balance').textContent = `$${totalBalance.toFixed(2)}`;
+  
+  // Clear existing transactions
+  const transactionList = document.querySelector('#transaction-list');
+  transactionList.innerHTML = '';
+  
+  // Add transactions
+  accountData.checking.transactions.concat(accountData.savings.transactions).forEach(transaction => {
+    const transactionRow = document.createElement('tr');
+    transactionRow.innerHTML = `
+      <td>${transaction.date}</td>
+      <td>${transaction.description}</td>
+      <td>${transaction.amount}</td>
+    `;
+    transactionList.appendChild(transactionRow);
+  });
+}
 
-    const totalBalance = accountData.checking.balance + accountData.savings.balance;
-    document.querySelector('.balance').textContent = `$${totalBalance.toFixed(2)}`;
+// Initial display update
+updateDisplay();
+
+function showAccountModal(accountType) {
+  const account = accountData[accountType];
+  const modalContent = `
+    <h5>${accountType.charAt(0).toUpperCase() + accountType.slice(1)} Account</h5>
+    <p>Account Number: ${account.number}</p>
+    <p>Balance: $${account.balance.toFixed(2)}</p>
+    <h6>Recent Transactions:</h6>
+    <ul>
+      ${account.transactions.slice(0, 5).map(t => 
+        `<li>${t.date} - ${t.description}: $${t.amount}</li>`
+      ).join('')}
+    </ul>
+  `;
+  document.getElementById('accountDetailsContent').innerHTML = modalContent;
+  new bootstrap.Modal(document.getElementById('accountDetailsModal')).show();
 }
 </script>
 

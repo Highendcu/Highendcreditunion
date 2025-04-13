@@ -4,7 +4,7 @@
       "id": "1633031532000",
       "name": "John Doe",
       "email": "johndoe@example.com",
-      "password": "hashedpassword123",
+      "password": "$2a$10$hashedpasswordexample1234567890123456789012",
       "status": "active",
       "checking": {
         "accountNumber": "1234567890",

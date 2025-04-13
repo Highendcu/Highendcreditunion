@@ -592,18 +592,41 @@
   }
 
   function completeSetup() {
-    const form = document.getElementById('credentialForm');
-    if (!form.checkValidity()) {
-      form.classList.add('was-validated');
-      return;
-    }
+  const form = document.getElementById('credentialForm');
+  if (!form.checkValidity()) {
+    form.classList.add('was-validated');
+    return;
+  }
 
-    const name = document.getElementById('firstName').value + " " + document.getElementById('lastName').value;
-    const email = document.getElementById('email').value;
-    // CORRECTED LINE: Changed 'newPassword' to 'password'
-    const password = document.getElementById('password').value;
-    const accountTypes = selectedAccounts.length > 0 ? selectedAccounts : ['checking'];
-    const balance = 0;
+  const name = document.getElementById('firstName').value + " " + document.getElementById('lastName').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const accountTypes = selectedAccounts;
+
+  fetch('/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      name: name,
+      email: email,
+      password: password,
+      accountTypes: accountTypes 
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      localStorage.setItem('loggedInUser', JSON.stringify(data.user));
+      window.location.href = data.redirect;
+    } else {
+      alert(data.message || 'Registration failed. Try again.');
+    }
+  })
+  .catch(err => {
+    console.error('Error:', err);
+    alert('Something went wrong.');
+  });
+}
 	
 	// Replace the entire form submit handler with:
 document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -667,10 +690,12 @@ fetch('/register', {
 
   // Toggle account card selection
   document.querySelectorAll('.account-card').forEach(card => {
-    card.addEventListener('click', function () {
-      this.classList.toggle('selected');
-    });
+  card.addEventListener('click', function() {
+    this.classList.toggle('selected');
+    selectedAccounts = Array.from(document.querySelectorAll('.account-card.selected'))
+      .map(card => card.dataset.account);
   });
+});
 </script>
 </body>
 </html>
