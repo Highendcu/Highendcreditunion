@@ -199,8 +199,8 @@
                             </div>
                         </div>
                         <div class="account-buttons d-flex flex-wrap gap-2">
-                            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#accountDetailsModal">
-                                Account Details
+                            <button class="btn btn-outline-light" id="accountDetailsBtn" data-bs-toggle="modal" data-bs-target="#accountDetailsModal">
+                            Account Details
                             </button>
                             <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#zelleTransferModal">
                                 Zelle Transfer
@@ -345,13 +345,13 @@
     </div>
 </div>
 
-<div class="modal fade" id="accountDetailsModal" tabindex="-1">
+<!-- Account Details Modal -->
+<div class="modal fade" id="accountDetailsModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button class="btn btn-outline-light" id="accountDetailsBtn" data-bs-toggle="modal" data-bs-target="#accountDetailsModal">
-        Account Details
-        </button>
+        <h5 class="modal-title">Account Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div id="accountDetailsContent">
