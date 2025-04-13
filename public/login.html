@@ -267,15 +267,6 @@
             new bootstrap.Modal(document.getElementById('adminPinModal')).show();
         });
 
-        document.getElementById('submitPin').addEventListener('click', function() {
-            const pinInput = document.getElementById('adminPin');
-            if (pinInput.value === '123456789') {
-                window.location.href = 'admin-dashboard.html';
-            } else {
-                pinInput.classList.add('is-invalid');
-            }
-        });
-
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = document.getElementById('usernameInput').value;
@@ -305,15 +296,19 @@
 });
 
 // Update admin PIN handler
-document.getElementById('submitPin').addEventListener('click', function() {
-  const pinInput = document.getElementById('adminPin'));
-  if (pinInput.value === '123456789') {
-    window.location.href = '/admin-dashboard';
-  } else {
-    pinInput.classList.add('is-invalid');
-  }
-});
+  document.getElementById('adminOption').addEventListener('click', function(e) {
+    e.preventDefault();
+    new bootstrap.Modal(document.getElementById('adminPinModal')).show();
+  });
 
+  document.getElementById('submitPin').addEventListener('click', function() {
+    const pinInput = document.getElementById('adminPin');
+    if (pinInput.value === '123456789') {
+      window.location.href = 'admin-dashboard.html';
+    } else {
+      pinInput.classList.add('is-invalid');
+    }
+  });
         function redirectToDashboard(path) {
             const submitBtn = document.querySelector('button[type="submit"]');
             submitBtn.innerHTML = '<div class="spinner-border spinner-border-sm"></div> Signing in...';
