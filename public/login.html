@@ -276,32 +276,40 @@
             }
         });
 
-        // Enhanced form validation with credentials check
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = document.getElementById('usernameInput').value;
+  const password = document.getElementById('passwordInput').value;
 
-            const email = document.getElementById('usernameInput').value;
-            const password = document.getElementById('passwordInput').value;
-			
-			
+  fetch('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      localStorage.setItem('loggedInUser', JSON.stringify(data.user));
+      window.location.href = '/user-dashboard';
+    } else {
+      alert('Invalid email or password!');
+    }
+  })
+  .catch(err => {
+    console.error('Login error:', err);
+    alert('Login failed. Please try again.');
+  });
+});
 
-            // Check hardcoded admin
-            if (email === 'Admin@admin.com' && password === '12345') {
-                redirectToDashboard('user-dashboard.html');
-                return;
-            }
-
-            // Check registered users
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const validUser = users.find(user => user.email === email && user.password === password);
-
-            if (validUser) {
-			localStorage.setItem('loggedInUser', JSON.stringify(user));
-			window.location.href = 'user-dashboard.html';  // Redirect to the user's dashboard
-			} else {
-               alert('Invalid email or password!');
-            }
-        });
+// Update admin PIN handler
+document.getElementById('submitPin').addEventListener('click', function() {
+  const pinInput = document.getElementById('adminPin'));
+  if (pinInput.value === '123456789') {
+    window.location.href = '/admin-dashboard';
+  } else {
+    pinInput.classList.add('is-invalid');
+  }
+});
 
         function redirectToDashboard(path) {
             const submitBtn = document.querySelector('button[type="submit"]');

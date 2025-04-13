@@ -537,7 +537,24 @@ if (!bankData[loggedInUser.email]) {
 }
 
 // Load account data for the logged-in user
-const accountData = bankData[loggedInUser.email];
+const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+if (!loggedInUser) {
+  window.location.href = '/login';
+}
+
+// Add this fetch call at the start of the script
+fetch(`/api/users/${loggedInUser.id}`)
+  .then(res => res.json())
+  .then(userData => {
+    // Update all account balances and details using userData
+    document.querySelector('#checking-balance').textContent = `$${userData.checking.balance.toFixed(2)}`;
+    document.querySelector('#savings-balance').textContent = `$${userData.savings.balance.toFixed(2)}`;
+    // Update other elements similarly...
+  })
+  .catch(err => {
+    console.error('Error fetching user data:', err);
+  });
 
 // Update account number and balance displays
 document.querySelector('#checking-account-number').textContent = accountData.checking.number;

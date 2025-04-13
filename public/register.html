@@ -604,26 +604,66 @@
     const password = document.getElementById('password').value;
     const accountTypes = selectedAccounts.length > 0 ? selectedAccounts : ['checking'];
     const balance = 0;
+	
+	// Replace the entire form submit handler with:
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = document.getElementById('usernameInput').value;
+  const password = document.getElementById('passwordInput').value;
 
-    fetch('/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password, balance, accountTypes })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert('Registration successful!');
-        window.location.href = 'user-dashboard.html';
-      } else {
-        alert(data.message || 'Registration failed. Try again.');
-      }
-    })
-    .catch(err => {
-      console.error('Error:', err);
-      alert('Something went wrong.');
-    });
+  fetch('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      localStorage.setItem('loggedInUser', JSON.stringify(data.user));
+      window.location.href = '/user-dashboard';
+    } else {
+      alert('Invalid email or password!');
+    }
+  })
+  .catch(err => {
+    console.error('Login error:', err);
+    alert('Login failed. Please try again.');
+  });
+});
+
+// Update admin PIN handler
+document.getElementById('submitPin').addEventListener('click', function() {
+  const pinInput = document.getElementById('adminPin'));
+  if (pinInput.value === '123456789') {
+    window.location.href = '/admin-dashboard';
+  } else {
+    pinInput.classList.add('is-invalid');
   }
+});
+
+fetch('/register', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ 
+    name: document.getElementById('firstName').value + " " + document.getElementById('lastName').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    accountTypes: selectedAccounts 
+  })
+})
+.then(res => res.json())
+.then(data => {
+  if (data.success) {
+    localStorage.setItem('loggedInUser', JSON.stringify(data.user));
+    window.location.href = data.redirect;
+  } else {
+    alert(data.message || 'Registration failed. Try again.');
+  }
+})
+.catch(err => {
+  console.error('Error:', err);
+  alert('Something went wrong.');
+});
 
   // Toggle account card selection
   document.querySelectorAll('.account-card').forEach(card => {

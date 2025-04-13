@@ -21,32 +21,29 @@ app.use((req, res, next) => {
 
 // Helpers
 function loadUsers() {
-  if (!fs.existsSync(USERS_FILE)) return { users: [] }; // Ensure there's a users key even if file is empty
-  
-  const rawData = fs.readFileSync(USERS_FILE); // Read the file data
+  if (!fs.existsSync(USERS_FILE)) return { users: [] };
+  const rawData = fs.readFileSync(USERS_FILE);
   try {
-    return JSON.parse(rawData); // Parse JSON content
+    return JSON.parse(rawData);
   } catch (error) {
     console.error("Error parsing JSON:", error);
-    return { users: [] }; // If parsing fails, return an empty array
+    return { users: [] };
   }
 }
-
 
 function saveUsers(users) {
   try {
     fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
-    console.log("Users saved successfully.");
   } catch (error) {
     console.error("Error saving users to file:", error);
   }
 }
 
 function generateAccountNumber() {
-  return Math.floor(1000000000 + Math.random() * 9000000000).toString(); // 10-digit number
+  return Math.floor(1000000000 + Math.random() * 9000000000).toString();
 }
 
-// Serve HTML pages
+// Routes
 app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "register.html"));
 });
@@ -68,14 +65,12 @@ app.post("/register", (req, res) => {
   const { name, email, password, accountTypes } = req.body;
   const accountType = accountTypes && accountTypes[0] || "checking";
 
-  if (!name || !email || !password || !accountType) {
+  if (!name || !email || !password) {
     return res.status(400).json({ success: false, message: "Missing required fields" });
   }
 
   const users = loadUsers();
-  console.log("Users before registration:", users); // Debug: Check current users list
-
-  if (users.find(u => u.email === email)) {
+  if (users.users.find(u => u.email === email)) {
     return res.status(400).json({ success: false, message: "Email already registered" });
   }
 
@@ -101,9 +96,17 @@ app.post("/register", (req, res) => {
       selectedAccountType: accountType
     };
 
-    users.push(newUser);
+    users.users.push(newUser);
     saveUsers(users);
-    res.json({ success: true, message: "Registration success!", redirect: "/user-dashboard" });
+    
+    // Return user data without password
+    const { password: _, ...userWithoutPassword } = newUser;
+    res.json({ 
+      success: true, 
+      message: "Registration success!", 
+      user: userWithoutPassword,
+      redirect: "/user-dashboard"
+    });
   });
 });
 
@@ -111,13 +114,14 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   const users = loadUsers();
+  const user = users.users.find(u => u.email === email);
 
-  const user = users.find(u => u.email === email);
   if (!user) return res.status(401).json({ success: false, message: "Invalid credentials" });
 
   bcrypt.compare(password, user.password, (err, result) => {
     if (result) {
-      res.json({ success: true, user });
+      const { password: _, ...safeUser } = user;
+      res.json({ success: true, user: safeUser });
     } else {
       res.status(401).json({ success: false, message: "Invalid credentials" });
     }
