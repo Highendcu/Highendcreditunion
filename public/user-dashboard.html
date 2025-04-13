@@ -349,9 +349,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Account Details</h5>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountDetailsModal" id="viewAccountDetailsBtn">
-        View Account Details
+        <button class="btn btn-outline-light" id="accountDetailsBtn" data-bs-toggle="modal" data-bs-target="#accountDetailsModal">
+        Account Details
         </button>
       </div>
       <div class="modal-body">
@@ -656,33 +655,33 @@ function showAccountModal(accountType) {
 }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const viewBtn = document.getElementById('viewAccountDetailsBtn');
-    const box = document.getElementById('accountDetailsContent');
+    const detailsBtn = document.getElementById('accountDetailsBtn');
+    const detailsBox = document.getElementById('accountDetailsContent');
 
-    if (viewBtn) {
-      viewBtn.addEventListener('click', () => {
-        const user = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+    detailsBtn.addEventListener('click', () => {
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+        const bankData = JSON.parse(localStorage.getItem('bankData') || '{}');
+        const userAccounts = bankData[loggedInUser.email];
 
-        if (!user || !user.checking || !user.savings) {
-          box.innerHTML = `<p class="text-danger">Account information not available.</p>`;
-          return;
+        if (!userAccounts) {
+            detailsBox.innerHTML = `<p class="text-danger">Account information not found.</p>`;
+            return;
         }
 
-        box.innerHTML = `
-          <p><strong>Name:</strong> ${user.name}</p>
-          <p><strong>Email:</strong> ${user.email}</p>
-          <hr>
-          <p><strong>Primary Account Type:</strong> ${user.selectedAccountType.replace(/-/g, ' ')}</p>
-          <hr>
-          <p><strong>🔹 Checking Account Number:</strong> ${user.checking.accountNumber}</p>
-          <p><strong>Balance:</strong> $${user.checking.balance.toFixed(2)}</p>
-          <hr>
-          <p><strong>🔸 Savings Account Number:</strong> ${user.savings.accountNumber}</p>
-          <p><strong>Balance:</strong> $${user.savings.balance.toFixed(2)}</p>
+        detailsBox.innerHTML = `
+            <p><strong>Name:</strong> ${loggedInUser.name}</p>
+            <p><strong>Email:</strong> ${loggedInUser.email}</p>
+            <hr>
+            <p><strong>Primary Account Type:</strong> ${loggedInUser.selectedAccountType?.replace(/-/g, ' ') || 'N/A'}</p>
+            <hr>
+            <p><strong>🔹 Checking Account Number:</strong> ${userAccounts.checking.number}</p>
+            <p><strong>Balance:</strong> $${userAccounts.checking.balance.toFixed(2)}</p>
+            <hr>
+            <p><strong>🔸 Savings Account Number:</strong> ${userAccounts.savings.number}</p>
+            <p><strong>Balance:</strong> $${userAccounts.savings.balance.toFixed(2)}</p>
         `;
-      });
-    }
-  });
+    });
+});
 </script>
 
 <!-- Bottom Links Section -->
