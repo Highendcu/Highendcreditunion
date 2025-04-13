@@ -98,12 +98,11 @@ app.post("/register", (req, res) => {
 
     users.users.push(newUser);
     saveUsers(users);
-    
-    // Return user data without password
+
     const { password: _, ...userWithoutPassword } = newUser;
-    res.json({ 
-      success: true, 
-      message: "Registration success!", 
+    res.json({
+      success: true,
+      message: "Registration success!",
       user: userWithoutPassword,
       redirect: "/user-dashboard"
     });
@@ -141,7 +140,7 @@ app.post("/admin-login", (req, res) => {
 // API Routes
 app.get("/api/users", (req, res) => {
   const users = loadUsers();
-  res.json(users);
+  res.json(users.users);
 });
 
 app.get("/api/users/:id", (req, res) => {
@@ -157,7 +156,7 @@ app.get("/api/users/:id", (req, res) => {
 
 app.post("/api/users/:id/toggle-suspend", (req, res) => {
   const users = loadUsers();
-  const user = users.find(u => u.id === req.params.id);
+  const user = users.users.find(u => u.id === req.params.id);
   if (user) {
     user.status = user.status === "suspended" ? "active" : "suspended";
     saveUsers(users);
@@ -170,7 +169,7 @@ app.post("/api/users/:id/toggle-suspend", (req, res) => {
 app.post("/api/users/:id/change-password", (req, res) => {
   const { newPassword } = req.body;
   const users = loadUsers();
-  const user = users.find(u => u.id === req.params.id);
+  const user = users.users.find(u => u.id === req.params.id);
   if (user) {
     bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
       if (err) return res.status(500).json({ success: false, message: 'Error hashing password' });
@@ -186,7 +185,7 @@ app.post("/api/users/:id/change-password", (req, res) => {
 
 app.get("/api/users/:id/transactions", (req, res) => {
   const users = loadUsers();
-  const user = users.find(u => u.id === req.params.id);
+  const user = users.users.find(u => u.id === req.params.id);
   if (user) {
     const allTxns = [
       ...user.checking.transactions.map(txn => ({ ...txn, account: "checking" })),
@@ -202,7 +201,7 @@ app.post("/api/users/:id/update-balance", (req, res) => {
   const { amount, account } = req.body;
   const amt = parseFloat(amount);
   const users = loadUsers();
-  const user = users.find(u => u.id === req.params.id);
+  const user = users.users.find(u => u.id === req.params.id);
 
   if (!user || !["checking", "savings"].includes(account)) {
     return res.status(400).json({ message: "Invalid user or account type" });
