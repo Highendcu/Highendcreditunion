@@ -145,7 +145,7 @@
         <a href="register.html" class="btn btn-outline-light">Credit Card</a>
         <a href="register.html" class="btn btn-outline-light">Open Account</a>
         <div class="dropdown">
-            <button class="btn btn-outline-light dropdown-toggle" type="button" 
+            <button class="btn btn-call dropdown-toggle" type="button" 
                     id="dropdownMenuButton" 
                     data-bs-toggle="dropdown" 
                     aria-expanded="false">
@@ -157,6 +157,7 @@
             </ul>
         </div>
     </div>
+
 
     <div class="auth-card">
         <h2 class="auth-header text-center">Secure Member Sign On</h2>
@@ -253,73 +254,40 @@
     </div>
 
     <!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
-<script>
-  // Ensure dropdown works
-  const dropdown = new bootstrap.Dropdown(document.getElementById('dropdownMenuButton'));
+    <script>
+        // Ensure dropdown works with Bootstrap 5
+        const dropdown = new bootstrap.Dropdown(document.getElementById('dropdownMenuButton'));
 
-  // Admin PIN modal logic
-  document.getElementById('adminOption').addEventListener('click', function (e) {
-    e.preventDefault();
-    new bootstrap.Modal(document.getElementById('adminPinModal')).show();
-  });
+        // Admin PIN Modal
+        document.getElementById('adminOption').addEventListener('click', function(e) {
+            e.preventDefault();
+            new bootstrap.Modal(document.getElementById('adminPinModal')).show();
+        });
 
-  document.getElementById('submitPin').addEventListener('click', function () {
-    const pinInput = document.getElementById('adminPin');
-    if (pinInput.value === '123456789') {
-      window.location.href = 'admin-dashboard.html';
-    } else {
-      pinInput.classList.add('is-invalid');
-    }
-  });
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
 
-  document.getElementById('loginForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const email = document.getElementById('usernameInput').value.trim().toLowerCase();
-    const password = document.getElementById('passwordInput').value.trim();
-
-    const submitBtn = document.querySelector('button[type="submit"]');
-    submitBtn.innerHTML = '<div class="spinner-border spinner-border-sm"></div> Signing in...';
-
-    fetch('/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    })
-    .then(async res => {
-      if (!res.ok) throw new Error('Failed');
-
-      const data = await res.json();
-      if (data.success) {
-        localStorage.setItem('loggedInUser', JSON.stringify(data.user));
-        window.location.href = '/user-dashboard';
-      } else {
-        // fallback to localStorage if login fails on server
-        fallbackLogin(email, password);
-      }
-    })
-    .catch(err => {
-      console.error('Login error:', err);
-      fallbackLogin(email, password);
-    });
-  });
-
-  function fallbackLogin(email, password) {
-    const submitBtn = document.querySelector('button[type="submit"]');
-    submitBtn.innerHTML = 'Sign On';
-
-    const localUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = localUsers.find(u => u.email === email && u.password === password);
-
-    if (user) {
-      localStorage.setItem('loggedInUser', JSON.stringify(user));
+            fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+        })
+        .then(res => {
+        if (!res.ok) throw new Error('Login failed');
+        return res.json();
+        })
+        .then(data => {
+         if (data.success) {
+      localStorage.setItem('loggedInUser', JSON.stringify(data.user));
       window.location.href = '/user-dashboard';
     } else {
       alert('Invalid email or password!');
     }
-  }
   })
   .catch(err => {
     console.error('Login error:', err);
