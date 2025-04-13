@@ -350,7 +350,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Account Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountDetailsModal" id="viewAccountDetailsBtn">
+        View Account Details
+        </button>
       </div>
       <div class="modal-body">
         <div id="accountDetailsContent">
@@ -652,6 +654,35 @@ function showAccountModal(accountType) {
   document.getElementById('accountDetailsContent').innerHTML = modalContent;
   new bootstrap.Modal(document.getElementById('accountDetailsModal')).show();
 }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const viewBtn = document.getElementById('viewAccountDetailsBtn');
+    const box = document.getElementById('accountDetailsContent');
+
+    if (viewBtn) {
+      viewBtn.addEventListener('click', () => {
+        const user = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+
+        if (!user || !user.checking || !user.savings) {
+          box.innerHTML = `<p class="text-danger">Account information not available.</p>`;
+          return;
+        }
+
+        box.innerHTML = `
+          <p><strong>Name:</strong> ${user.name}</p>
+          <p><strong>Email:</strong> ${user.email}</p>
+          <hr>
+          <p><strong>Primary Account Type:</strong> ${user.selectedAccountType.replace(/-/g, ' ')}</p>
+          <hr>
+          <p><strong>🔹 Checking Account Number:</strong> ${user.checking.accountNumber}</p>
+          <p><strong>Balance:</strong> $${user.checking.balance.toFixed(2)}</p>
+          <hr>
+          <p><strong>🔸 Savings Account Number:</strong> ${user.savings.accountNumber}</p>
+          <p><strong>Balance:</strong> $${user.savings.balance.toFixed(2)}</p>
+        `;
+      });
+    }
+  });
 </script>
 
 <!-- Bottom Links Section -->
