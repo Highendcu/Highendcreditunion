@@ -17,6 +17,24 @@
         "transactions": []
       },
       "selectedAccountType": "checking"
+    },
+    {
+      "id": "1744492801692",
+      "name": "Richard Wheat",
+      "email": "rb1750067@gmail.com",
+      "password": "$2a$10$placeholderhashedpassword",  // <- replace with actual hash
+      "status": "active",
+      "checking": {
+        "accountNumber": "3197261406",
+        "balance": 0,
+        "transactions": []
+      },
+      "savings": {
+        "accountNumber": "9542744125",
+        "balance": 0,
+        "transactions": []
+      },
+      "selectedAccountType": "platinum-checking"
     }
   ]
 }
