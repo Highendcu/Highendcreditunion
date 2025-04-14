@@ -267,29 +267,27 @@
             new bootstrap.Modal(document.getElementById('adminPinModal')).show();
         });
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('usernameInput').value;
-            const password = document.getElementById('passwordInput').value;
-            
-			const User = require('./models/User'); 
-			
-            app.post('/login', async (req, res) => {
-              const { email, password } = req.body;
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
 
-              try {
-                const user = await User.findOne({ email });
+      const email = document.getElementById("usernameInput").value.trim();
+      const password = document.getElementById("passwordInput").value;
 
-                if (!user || user.password !== password) {
-                   return res.status(401).json({ success: false });
-                }
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-                res.json({ success: true, user });
-              } catch (err) {
-                console.error('Login error:', err);
-                res.status(500).json({ success: false });
-              }
-            });
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem("loggedInUser", JSON.stringify(data.user));
+        window.location.href = "/user-dashboard";
+      } else {
+        alert(data.message || "Login failed");
+      }
+    });
 			
         .then(res => {
         if (!res.ok) throw new Error('Login failed');
