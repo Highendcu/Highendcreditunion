@@ -221,6 +221,7 @@ app.post("/api/users/:id/update-balance", (req, res) => {
 });
 
 app.get('/admin-dashboard', (req, res) => {
+  console.log("Serving admin dashboard...");
   res.sendFile(path.join(__dirname, 'views', 'admin-dashboard.html'));
 });
 
