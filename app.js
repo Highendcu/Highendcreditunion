@@ -1,15 +1,15 @@
-
 const express = require("express");
+const helmet = require("helmet"); // ⬅️ Move helmet up here
 const path = require("path");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("./models/User");
 
-const helmet = require("helmet");
-app.use(helmet());
+const app = express(); 
 
-const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(helmet()); 
 
 // Connect to MongoDB
 mongoose.connect("mongodb://gregorydill6:Password112122@ac-nxdneak-shard-00-00.jtmwxgt.mongodb.net:27017,ac-nxdneak-shard-00-01.jtmwxgt.mongodb.net:27017,ac-nxdneak-shard-00-02.jtmwxgt.mongodb.net:27017/?replicaSet=atlas-os1o3c-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=BankCluster")
