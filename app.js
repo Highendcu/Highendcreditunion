@@ -1,154 +1,102 @@
+
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
+const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const mongoose = require('mongoose');
-const adminRoutes = require('./routes/admin');
+const User = require("./models/User");
+
 const app = express();
 const port = process.env.PORT || 3000;
 
-const USERS_FILE = path.join(__dirname, "data", "users.json");
+// Connect to MongoDB
+mongoose.connect("mongodb+srv://gregorydill6:<db_password>@bankcluster.jtmwxgt.mongodb.net/?retryWrites=true&w=majority&appName=BankCluster", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("MongoDB connected"))
+.catch((err) => console.error("MongoDB connection error:", err));
 
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Force HTTPS on Render
-app.use((req, res, next) => {
-  if (req.headers["x-forwarded-proto"] !== "https") {
-    return res.redirect("https://" + req.headers.host + req.url);
-  }
-  next();
-});
-
-// Helpers
-function loadUsers() {
-  if (!fs.existsSync(USERS_FILE)) return { users: [] };
-  const rawData = fs.readFileSync(USERS_FILE);
-  try {
-    return JSON.parse(rawData);
-  } catch (error) {
-    console.error("Error parsing JSON:", error);
-    return { users: [] };
-  }
-}
-
-function saveUsers(users) {
-  try {
-    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
-  } catch (error) {
-    console.error("Error saving users to file:", error);
-  }
-}
-
-function generateAccountNumber() {
-  return Math.floor(1000000000 + Math.random() * 9000000000).toString();
-}
-
-// Routes
+// View routes
 app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "register.html"));
 });
 
-app.get("/admin-login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "admin-login.html"));
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
 });
 
 app.get("/user-dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "user-dashboard.html"));
 });
 
-// Register new user
-app.post("/register", (req, res) => {
-  const { name, email, password, accountTypes } = req.body;
-  const accountType = accountTypes && accountTypes[0] || "checking";
+// Register a new user
+app.post("/register", async (req, res) => {
+  const { name, email, password } = req.body;
 
-  if (!name || !email || !password) {
-    return res.status(400).json({ success: false, message: "Missing required fields" });
-  }
+  try {
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(400).json({ success: false, message: "Email already registered" });
 
-  const users = loadUsers();
-  if (users.users.find(u => u.email === email)) {
-    return res.status(400).json({ success: false, message: "Email already registered" });
-  }
-
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
-    if (err) return res.status(500).json({ success: false, message: "Error hashing password" });
-
-    const newUser = {
-      id: Date.now().toString(),
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
       name,
       email,
       password: hashedPassword,
-      status: "active",
       checking: {
-        accountNumber: generateAccountNumber(),
+        accountNumber: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
         balance: 0,
-        transactions: [],
+        transactions: []
       },
       savings: {
-        accountNumber: generateAccountNumber(),
+        accountNumber: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
         balance: 0,
-        transactions: [],
-      },
-      selectedAccountType: accountType
-    };
-
-    users.users.push(newUser);
-    saveUsers(users);
-
-    const { password: _, ...userWithoutPassword } = newUser;
-    res.json({
-      success: true,
-      message: "Registration success!",
-      user: userWithoutPassword,
-      redirect: "/user-dashboard"
+        transactions: []
+      }
     });
-  });
-});
 
-// Login route
-app.post("/login", (req, res) => {
-  const { email, password } = req.body;
-  const users = loadUsers();
-  const user = users.users.find(u => u.email === email);
-
-  if (!user) return res.status(401).json({ success: false, message: "Invalid credentials" });
-
-  bcrypt.compare(password, user.password, (err, result) => {
-    if (result) {
-      const { password: _, ...safeUser } = user;
-      res.json({ success: true, user: safeUser });
-    } else {
-      res.status(401).json({ success: false, message: "Invalid credentials" });
-    }
-  });
-});
-
-// Admin login
-app.post("/admin-login", (req, res) => {
-  const { username, password } = req.body;
-  if (username === "admin" && password === "123456789") {
-    res.redirect("/admin-dashboard");
-  } else {
-    res.status(401).send("Invalid admin credentials.");
+    await newUser.save();
+    const user = newUser.toObject();
+    delete user.password;
+    res.json({ success: true, user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Registration failed" });
   }
 });
 
-// API Routes
-app.get("/api/users", (req, res) => {
-  const users = loadUsers();
-  res.json(users.users);
+// Login
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email: email.trim().toLowerCase() });
+    if (!user) return res.status(401).json({ success: false, message: "User not found" });
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(401).json({ success: false, message: "Incorrect password" });
+
+    const safeUser = user.toObject();
+    delete safeUser.password;
+    res.json({ success: true, user: safeUser });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Login error" });
+  }
 });
 
-app.get("/api/users/:id", (req, res) => {
-  const users = loadUsers();
-  const user = users.users.find(u => u.id === req.params.id);
-  if (user) {
-    const { password, ...safeUser } = user;
-    res.json(safeUser);
-  } else {
-    res.status(404).json({ message: "User not found" });
+// Fetch all users
+app.get("/api/users", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to load users" });
   }
 });
 
@@ -216,10 +164,8 @@ app.post("/api/users/:id/update-balance", (req, res) => {
   res.json({ message: "Balance updated", balance: user[account].balance });
 });
 
-app.get('/admin-dashboard', (req, res) => {
-  console.log("Serving admin dashboard...");
-  res.sendFile(path.join(__dirname, 'views', 'admin-dashboard.html'));
-});
+// Mount admin routes
+app.use("/api/admin", require("./routes/admin"));
 
 // Start server
 app.listen(port, () => {
