@@ -77,63 +77,78 @@
 	<div class="container mx-auto p-5">
     <h1 class="text-3xl font-bold text-center">Admin Dashboard</h1>
 
-    <!-- User Management -->
+       <!-- Manage Users -->
     <div class="card">
       <div class="card-header">
         <h2 class="text-xl font-semibold">Manage Users</h2>
       </div>
       <div class="card-body">
-        <table class="table-auto w-full text-left">
+        <table class="table-auto w-full text-left text-white">
           <thead>
             <tr>
-              <th class="px-4 py-2">ID</th>
               <th class="px-4 py-2">Name</th>
               <th class="px-4 py-2">Email</th>
-              <th class="px-4 py-2">Balance</th>
+              <th class="px-4 py-2">Account Numbers</th>
+              <th class="px-4 py-2">Balances</th>
               <th class="px-4 py-2">Status</th>
               <th class="px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody id="user-table">
-            <!-- Dynamic user rows will be added here -->
+        <!-- Dynamic user rows will be added here -->
           </tbody>
         </table>
       </div>
     </div>
 
+
     <!-- User Actions -->
-    <div id="user-actions" class="card mt-4 hidden">
-      <div class="card-header">
-        <h2 class="text-xl font-semibold">User Actions</h2>
-      </div>
-      <div class="card-body">
-        <form id="user-action-form">
-          <label class="block mb-2">Select Action</label>
-          <select id="action" class="w-full p-2 mb-4">
-            <option value="suspend">Suspend/Unsuspend User</option>
-            <option value="change-password">Change User Password</option>
-            <option value="update-balance">Update User Balance</option>
-          </select>
+    <div id="user-actions" class="card mt-4">
+       <div class="card-header">
+         <h2 class="text-xl font-semibold">User Actions</h2>
+        </div>
+        <div class="card-body">
+          <form id="user-action-form">
+            <div class="mb-3">
+              <label class="form-label">Select Action</label>
+              <select id="action" class="form-select">
+                <option value="update-balance">Update User Balance</option>
+                <option value="change-password">Change User Password</option>
+                <option value="suspend">Suspend/Unsuspend User</option>
+              </select>
+            </div>
 
-          <div id="user-id-field" class="mb-4">
-            <label class="block mb-2">Enter User ID</label>
-            <input type="text" id="user-id" class="w-full p-2" required />
-          </div>
+            <div class="mb-3" id="account-fields">
+              <label class="form-label">Account Number</label>
+              <input type="text" id="account-number-action" class="form-control" required>
 
-          <div id="balance-field" class="mb-4 hidden">
-            <label class="block mb-2">Balance (Amount to Add/Reduce)</label>
-            <input type="number" id="balance-amount" class="w-full p-2" />
-          </div>
+              <label class="form-label mt-2">Account Type</label>
+              <select id="account-type-action" class="form-select">
+                <option value="checking">Checking</option>
+                <option value="savings">Savings</option>
+              </select>
+            </div>
 
-          <div id="password-field" class="mb-4 hidden">
-            <label class="block mb-2">New Password</label>
-            <input type="password" id="new-password" class="w-full p-2" />
-          </div>
+            <div class="mb-3 d-none" id="balance-field">
+              <label class="form-label">Amount (+ or -)</label>
+             <input type="number" id="balance-amount" class="form-control">
+            </div>
 
-          <button type="submit" class="bg-blue-500 text-white p-2 rounded">Execute Action</button>
-        </form>
-      </div>
+            <div class="mb-3 d-none" id="password-field">
+              <label class="form-label">New Password</label>
+              <input type="password" id="new-password" class="form-control">
+            </div>
+
+            <div class="mb-3 d-none" id="user-id-field">
+              <label class="form-label">User ID</label>
+              <input type="text" id="user-id" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Execute Action</button>
+          </form>
+        </div>
     </div>
+
 
     <!-- Admin Dashboard Container -->
     <div class="dashboard-container">
@@ -357,58 +372,144 @@
 		
 		    // Fetch all users
     async function fetchUsers() {
-      const response = await fetch('/api/users');
-      const users = await response.json();
-      const tableBody = document.getElementById('user-table');
-      tableBody.innerHTML = '';
+  const response = await fetch('/api/users');
+  const users = await response.json();
+  const tableBody = document.getElementById('user-table');
+  tableBody.innerHTML = '';
 
-      users.forEach(user => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="px-4 py-2">${user.id}</td>
-          <td class="px-4 py-2">${user.name}</td>
-          <td class="px-4 py-2">${user.email}</td>
-          <td class="px-4 py-2">${user.balance}</td>
-          <td class="px-4 py-2">${user.status}</td>
-          <td class="px-4 py-2">
-            <button class="text-blue-500" onclick="editUser('${user.id}')">Edit</button>
-          </td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
+  users.forEach(user => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td class="px-4 py-2">${user.name}</td>
+      <td class="px-4 py-2">${user.email}</td>
+      <td class="px-4 py-2">
+        Checking: ${user.checking.accountNumber}<br>
+        Savings: ${user.savings.accountNumber}
+      </td>
+      <td class="px-4 py-2">
+        Checking: $${user.checking.balance.toLocaleString()}<br>
+        Savings: $${user.savings.balance.toLocaleString()}
+      </td>
+      <td class="px-4 py-2">${user.status}</td>
+      <td class="px-4 py-2">
+        <div class="d-flex flex-column gap-1">
+          <button class="btn btn-sm btn-warning" onclick="editUser('${user.checking.accountNumber}', 'checking')">Edit Checking</button>
+          <button class="btn btn-sm btn-secondary" onclick="editUser('${user.savings.accountNumber}', 'savings')">Edit Savings</button>
+          <button class="btn btn-sm btn-info" onclick="changePasswordPrompt('${user.id}')">Change Password</button>
+          <button class="btn btn-sm btn-danger" onclick="toggleSuspendUser('${user.id}')">
+            ${user.status === 'suspended' ? 'Unsuspend' : 'Suspend'}
+          </button>
+        </div>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
 
-    // Handle User Action Form Submission
-    document.getElementById('user-action-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
+function editUser(accountNumber, accountType = "checking") {
+  document.getElementById('account-number-action').value = accountNumber;
+  document.getElementById('account-type-action').value = accountType;
 
-      const userId = document.getElementById('user-id').value;
-      const action = document.getElementById('action').value;
-      let data = {};
+  const actionForm = document.getElementById('user-action-form');
+  if (actionForm) {
+    actionForm.scrollIntoView({ behavior: "smooth" });
+  }
+}
 
-      if (action === 'suspend') {
-        const response = await fetch(`/api/users/${userId}/toggle-suspend`, { method: 'POST' });
-        const result = await response.json();
-        alert(result.message);
-      } else if (action === 'change-password') {
-        const newPassword = document.getElementById('new-password').value;
-        const response = await fetch(`/api/users/${userId}/change-password`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ newPassword })
-        });
-        const result = await response.json();
-        alert(result.message);
-      } else if (action === 'update-balance') {
-        const amount = document.getElementById('balance-amount').value;
-        const response = await fetch(`/api/users/${userId}/update-balance`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount })
-        });
-        const result = await response.json();
-        alert(result.message);
-      }
+function changePasswordPrompt(userId) {
+  const newPassword = prompt("Enter new password for this user:");
+  if (!newPassword) return;
+
+  fetch(`/api/users/${userId}/change-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ newPassword })
+  })
+    .then(res => res.json())
+    .then(data => alert(data.message || "Password updated"))
+    .catch(() => alert("Failed to update password."));
+}
+
+function toggleSuspendUser(userId) {
+  if (!confirm("Are you sure you want to toggle suspend for this user?")) return;
+
+  fetch(`/api/users/${userId}/toggle-suspend`, {
+    method: 'POST'
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      fetchUsers(); // Refresh table
+    })
+    .catch(() => alert("Error suspending user."));
+}
+
+
+    // Toggle fields based on action
+document.getElementById('action').addEventListener('change', function () {
+  const selected = this.value;
+  document.getElementById('balance-field').classList.toggle('d-none', selected !== 'update-balance');
+  document.getElementById('password-field').classList.toggle('d-none', selected !== 'change-password');
+  document.getElementById('user-id-field').classList.toggle('d-none', selected === 'update-balance');
+  document.getElementById('account-fields').classList.toggle('d-none', selected === 'suspend');
+});
+
+// Handle User Action form
+document.getElementById('user-action-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const action = document.getElementById('action').value;
+
+  if (action === 'update-balance') {
+    const accountNumber = document.getElementById('account-number-action').value;
+    const accountType = document.getElementById('account-type-action').value;
+    const amount = parseFloat(document.getElementById('balance-amount').value);
+
+    if (!accountNumber || isNaN(amount)) return alert("Please enter valid account details.");
+
+    const response = await fetch('/api/admin/transfer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        accountNumber,
+        accountType,
+        amount,
+        memo: "Admin adjustment via action panel"
+      })
+    });
+
+    const result = await response.json();
+    alert(result.message || "Balance updated.");
+    fetchUsers();
+
+  } else if (action === 'change-password') {
+    const userId = document.getElementById('user-id').value;
+    const newPassword = document.getElementById('new-password').value;
+    if (!userId || !newPassword) return alert("Please enter User ID and new password.");
+
+    const response = await fetch(`/api/users/${userId}/change-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newPassword })
+    });
+
+    const result = await response.json();
+    alert(result.message || "Password updated.");
+
+  } else if (action === 'suspend') {
+    const userId = document.getElementById('user-id').value;
+    if (!userId) return alert("Please enter User ID.");
+
+    const response = await fetch(`/api/users/${userId}/toggle-suspend`, {
+      method: 'POST'
+    });
+
+    const result = await response.json();
+    alert(result.message);
+    fetchUsers();
+  }
+
+  this.reset();
+});
 
       // Reset the form and refresh the user list
       document.getElementById('user-action-form').reset();
@@ -420,9 +521,6 @@
       document.getElementById('user-id').value = userId;
       document.getElementById('user-actions').classList.remove('hidden');
     }
-
-    // Fetch users when the page loads
-    window.onload = fetchUsers;
 
         // Sample user data
         const users = [
@@ -586,6 +684,8 @@
         initUserTable();
         updateTransactionTable();
         updatePagination();
+		
+		window.onload = fetchUsers;
     </script>
 </body>
 </html>

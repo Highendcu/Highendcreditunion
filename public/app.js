@@ -54,10 +54,6 @@ app.get("/admin-login", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-login.html"));
 });
 
-app.get("/admin-dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "admin-dashboard.html"));
-});
-
 app.get("/user-dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "user-dashboard.html"));
 });
@@ -221,6 +217,7 @@ app.post("/api/users/:id/update-balance", (req, res) => {
 });
 
 app.get('/admin-dashboard', (req, res) => {
+  console.log("Serving admin dashboard...");
   res.sendFile(path.join(__dirname, 'views', 'admin-dashboard.html'));
 });
 
