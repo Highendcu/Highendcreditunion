@@ -9,12 +9,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://gregorydill6:<gabjloYUu9OJLSWR>@bankcluster.jtmwxgt.mongodb.net/?retryWrites=true&w=majority&appName=BankCluster", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB connected"))
-.catch((err) => console.error("MongoDB connection error:", err));
+mongoose.connect("mongodb://gregorydill6:gabjloYUu9OJLSWR@ac-nxdneak-shard-00-00.jtmwxgt.mongodb.net:27017,ac-nxdneak-shard-00-01.jtmwxgt.mongodb.net:27017,ac-nxdneak-shard-00-02.jtmwxgt.mongodb.net:27017/?replicaSet=atlas-os1o3c-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=BankCluster")
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Middleware
 app.use(express.json());
