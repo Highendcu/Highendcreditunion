@@ -85,3 +85,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+
+document.getElementById('transferForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const accountNumber = document.getElementById('accountNumber').value;
+  const accountType = document.getElementById('accountType').value;
+  const amount = parseFloat(document.getElementById('transferAmount').value);
+  const memo = document.getElementById('transferMemo').value;
+
+  const response = await fetch('/api/admin/transfer', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ accountNumber, accountType, amount, memo })
+  });
+
+  const result = await response.json();
+  alert(result.message || 'Transfer complete');
+
+  this.reset();
+});
+
