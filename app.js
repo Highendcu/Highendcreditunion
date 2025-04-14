@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://gregorydill6:<db_password>@bankcluster.jtmwxgt.mongodb.net/?retryWrites=true&w=majority&appName=BankCluster", {
+mongoose.connect("mongodb+srv://gregorydill6:<gabjloYUu9OJLSWR>@bankcluster.jtmwxgt.mongodb.net/?retryWrites=true&w=majority&appName=BankCluster", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
