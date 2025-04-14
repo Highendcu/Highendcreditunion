@@ -129,17 +129,23 @@ app.post("/api/users/:id/change-password", (req, res) => {
   }
 });
 
-app.get("/api/users/:id/transactions", (req, res) => {
-  const users = loadUsers();
-  const user = users.users.find(u => u.id === req.params.id);
-  if (user) {
-    const allTxns = [
-      ...user.checking.transactions.map(txn => ({ ...txn, account: "checking" })),
-      ...user.savings.transactions.map(txn => ({ ...txn, account: "savings" }))
+// Get user transactions
+app.get("/api/users/:id/transactions", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const allTransactions = [
+      ...user.checking.transactions.map(tx => ({ ...tx, account: "checking" })),
+      ...user.savings.transactions.map(tx => ({ ...tx, account: "savings" }))
     ];
-    res.json(allTxns);
-  } else {
-    res.status(404).json({ message: "User not found" });
+
+    // Optional: sort by date, newest first
+    allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    res.json(allTransactions);
+  } catch (err) {
+    res.status(500).json({ message: "Error retrieving transactions" });
   }
 });
 
