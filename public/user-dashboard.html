@@ -473,9 +473,20 @@ function generateRandomAccountNumber() {
   return Math.floor(Math.random() * 9000000000 + 1000000000).toString();
 }
 
-function saveBankData() {
-  localStorage.setItem('bankData', JSON.stringify(bankData));
-}
+const MongoStore = require('connect-mongo');
+app.use(session({
+  store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/creditunion' }),
+  // ... other session options
+}));
+
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ server });
+
+wss.on('connection', (ws) => {
+  ws.on('message', (message) => {
+    // Handle real-time updates
+  });
+});
 
 document.getElementById('internalTransferForm').addEventListener('submit', function (e) {
   e.preventDefault();
