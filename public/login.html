@@ -304,7 +304,7 @@
   document.getElementById('submitPin').addEventListener('click', function() {
     const pinInput = document.getElementById('adminPin');
     if (pinInput.value === '123456789') {
-      window.location.href = 'admin-dashboard.html';
+      window.location.href = '/admin-dashboard';
     } else {
       pinInput.classList.add('is-invalid');
     }
