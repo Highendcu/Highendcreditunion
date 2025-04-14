@@ -220,6 +220,12 @@ app.post("/api/users/:id/update-balance", (req, res) => {
   res.json({ message: "Balance updated", balance: user[account].balance });
 });
 
+const path = require('path');
+
+app.get('/admin-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin-dashboard.html'));
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
