@@ -609,47 +609,38 @@
     setTimeout(() => showNextSection('emailVerification'), 300);
   }
 
-  function completeSetup() {
-    const form = document.getElementById('credentialForm');
-    if (!form.checkValidity()) {
-      form.classList.add('was-validated');
-      return;
-    }
-
-    const name = document.getElementById('firstName').value + " " + document.getElementById('lastName').value;
-    const email = document.getElementById('email').value;
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const selectedAccountType = selectedAccounts[0] || "checking";
-
-    const user = {
-      id: Date.now().toString(),
-      name,
-      email,
-      username,
-      selectedAccountType,
-      status: "active"
-    };
-
-    localStorage.setItem('loggedInUser', JSON.stringify(user));
-
-    const bankData = JSON.parse(localStorage.getItem('bankData') || '{}');
-    bankData[email] = {
-      checking: {
-        number: generateRandomAccountNumber(),
-        balance: 0,
-        transactions: []
-      },
-      savings: {
-        number: generateRandomAccountNumber(),
-        balance: 0,
-        transactions: []
-      }
-    };
-    localStorage.setItem('bankData', JSON.stringify(bankData));
-    localStorage.removeItem('signupProgress');
-    window.location.href = 'user-dashboard.html';
+  async function completeSetup() {
+  const form = document.getElementById('credentialForm');
+  if (!form.checkValidity()) {
+    form.classList.add('was-validated');
+    return;
   }
+
+  const name = document.getElementById('firstName').value + " " + document.getElementById('lastName').value;
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const selectedAccountType = selectedAccounts[0] || "checking";
+
+  try {
+    const response = await fetch("/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      localStorage.setItem("loggedInUser", JSON.stringify(data.user));
+      localStorage.removeItem("signupProgress");
+      window.location.href = "user-dashboard.html";
+    } else {
+      alert(data.message || "Registration failed");
+    }
+  } catch (err) {
+    alert("Server error. Please try again.");
+  }
+}
 
   function generateRandomAccountNumber() {
     return Math.floor(Math.random() * 9000000000 + 1000000000).toString();
