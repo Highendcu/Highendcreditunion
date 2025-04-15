@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const password = document.getElementById('password').value;
     const selectedAccountType = selectedAccounts[0] || "checking";
 
-    fetch("/api/users/register", {
+    fetch("/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
