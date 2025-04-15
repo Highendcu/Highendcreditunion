@@ -77,7 +77,7 @@
 </div>
 </div>
 <div class="text-center mt-4">
-<button id="continueBtn" class="btn btn-primary">Continue</button>
+<button class="btn btn-primary" id="btnToPersonalInfo">Continue</button>
 </div>
 </div>
 <!-- Step 2: Personal Information -->
@@ -185,10 +185,7 @@
 <div class="text-center mt-3">
 <button class="btn btn-outline-primary me-3" onclick="showPreviousSection()" type="button">
 <i class="fas fa-arrow-left me-2"></i>Back
-            </button>
-<button class="btn btn-primary" onclick="validatePersonalInfo()" type="button">
-              Continue <i class="fas fa-arrow-right ms-2"></i>
-</button>
+<button class="btn btn-primary" id="btnToReview">Continue</button>
 </div>
 </form>
 </div>
@@ -212,10 +209,7 @@
 <div class="text-center">
 <button class="btn btn-outline-primary me-3" onclick="showPreviousSection()">
 <i class="fas fa-arrow-left me-2"></i>Back
-          </button>
-<button class="btn btn-primary" onclick="submitApplication()">
-            Submit Application <i class="fas fa-check ms-2"></i>
-</button>
+<button class="btn btn-primary" id="btnToEmailVerify">Continue</button>
 </div>
 </div>
 <!-- Step 4: Email Verification -->
@@ -227,9 +221,7 @@
 <div class="alert alert-success mt-4">
 <i class="fas fa-check-circle me-2"></i>Email Verified!
           </div>
-<button class="btn btn-primary" onclick="showNextSection('credentials')">
-            Continue to Login Setup
-          </button>
+<button class="btn btn-primary" id="btnToCredentials">Continue</button>
 </div>
 </div>
 <!-- Step 5: Credentials Setup -->
@@ -251,10 +243,7 @@
 <div class="text-center">
 <button class="btn btn-outline-primary me-3" onclick="showPreviousSection()" type="button">
 <i class="fas fa-arrow-left me-2"></i>Back
-            </button>
-<button class="btn btn-primary" onclick="completeSetup()" type="button">
-              Complete Setup <i class="fas fa-check ms-2"></i>
-</button>
+<button class="btn btn-primary" onclick="completeSetup()">Finish</button>
 </div>
 </div>
 </div>

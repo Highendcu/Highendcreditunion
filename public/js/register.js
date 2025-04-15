@@ -178,11 +178,33 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const continueBtn = document.getElementById("continueBtn");
-  if (continueBtn) {
-    continueBtn.addEventListener("click", function (e) {
+  const btnToPersonalInfo = document.getElementById("btnToPersonalInfo");
+  const btnToReview = document.getElementById("btnToReview");
+  const btnToEmailVerify = document.getElementById("btnToEmailVerify");
+  const btnToCredentials = document.getElementById("btnToCredentials");
+
+  if (btnToPersonalInfo)
+    btnToPersonalInfo.addEventListener("click", (e) => {
       e.preventDefault();
       validateAccountSelection();
     });
-  }
+
+  if (btnToReview)
+    btnToReview.addEventListener("click", (e) => {
+      e.preventDefault();
+      validatePersonalInfo();
+    });
+
+  if (btnToEmailVerify)
+    btnToEmailVerify.addEventListener("click", (e) => {
+      e.preventDefault();
+      submitApplication();
+    });
+
+  if (btnToCredentials)
+    btnToCredentials.addEventListener("click", (e) => {
+      e.preventDefault();
+      showNextSection("credentials");
+    });
 });
+
