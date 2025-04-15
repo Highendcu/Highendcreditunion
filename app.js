@@ -62,7 +62,12 @@ app.get("/user-dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "user-dashboard.html"));
 });
 
+app.get("/views/admin-dashboard.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "admin-dashboard.html"));
+});
+
 app.use("/api/users", require("./routes/users"));
+app.use('/views', express.static(path.join(__dirname, 'views')));
 
 // Register a new user
 app.post("/register", async (req, res) => {
