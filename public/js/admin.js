@@ -87,43 +87,66 @@ document.getElementById("action").addEventListener("change", function () {
   document.getElementById("new-password").closest(".mb-3").classList.toggle("d-none", selected !== "change-password");
 });
 
-document.getElementById("user-action-form").addEventListener("submit", async function (e) {
-  e.preventDefault();
-  const action = document.getElementById("action").value;
+document.addEventListener("DOMContentLoaded", () => {
+  const alertBox = document.getElementById("admin-alert");
 
-  if (action === "update-balance") {
-    const accountNumber = document.getElementById("account-number-action").value;
+  function showAdminAlert(message, type = "success") {
+    alertBox.textContent = message;
+    alertBox.className = `alert alert-${type}`;
+    alertBox.classList.remove("d-none");
+
+    setTimeout(() => {
+      alertBox.classList.add("d-none");
+    }, 3000);
+  }
+
+  // Handle balance update
+  document.getElementById("user-action-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const accountNumber = document.getElementById("account-number-action").value.trim();
     const accountType = document.getElementById("account-type-action").value;
     const amount = parseFloat(document.getElementById("balance-amount").value);
-    if (!accountNumber || isNaN(amount)) return alert("Fill all fields");
-    const res = await fetch("/api/admin/transfer", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ accountNumber, accountType, amount, memo: "Admin Update" })
-    });
-    const result = await res.json();
-    alert(result.message || "Balance updated");
-    fetchUsers();
-  } else if (action === "change-password") {
-    const userId = document.getElementById("user-id").value;
-    const newPassword = document.getElementById("new-password").value;
-    if (!userId || !newPassword) return alert("Fill all fields");
-    const res = await fetch(`/api/users/${userId}/change-password`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ newPassword })
-    });
-    const result = await res.json();
-    alert(result.message || "Password changed");
-  } else if (action === "suspend") {
-    const userId = document.getElementById("user-id").value;
-    if (!userId) return alert("User ID required");
-    const res = await fetch(`/api/users/${userId}/toggle-suspend`, { method: "POST" });
-    const result = await res.json();
-    alert(result.message);
-    fetchUsers();
+
+    if (!accountNumber || isNaN(amount)) {
+      return showAdminAlert("Missing or invalid input", "danger");
+    }
+
+    try {
+      const res = await fetch("/api/users");
+      const users = await res.json();
+      const user = users.find(u => u[accountType]?.accountNumber === accountNumber);
+
+      if (!user) return showAdminAlert("User not found", "danger");
+
+      const updateRes = await fetch(`/api/users/${user._id}/update-balance`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ account: accountType, amount })
+      });
+
+      const result = await updateRes.json();
+      if (updateRes.ok) {
+        showAdminAlert("Balance updated successfully", "success");
+        highlightRow(user._id);
+      } else {
+        showAdminAlert(result.message || "Error updating balance", "danger");
+      }
+    } catch (err) {
+      showAdminAlert("Server error during balance update", "danger");
+      console.error(err);
+    }
+  });
+
+  function highlightRow(userId) {
+    const row = document.querySelector(`tr[data-user-id="${userId}"]`);
+    if (row) {
+      row.classList.add("table-success");
+      setTimeout(() => row.classList.remove("table-success"), 2000);
+    }
   }
-  this.reset();
+});
+
 });
 
 // Admin transfer form
@@ -235,3 +258,16 @@ document.getElementById("nextPage").addEventListener("click", () => {
     updatePagination();
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const alertBox = document.getElementById("admin-alert");
+
+  function showAdminAlert(message, type = "success") {
+    alertBox.textContent = message;
+    alertBox.className = `alert alert-${type}`;
+    alertBox.classList.remove("d-none");
+
+    setTimeout(() => {
+      alertBox.classList.add("d-none");
+    }, 3000);
+  }

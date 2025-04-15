@@ -4,9 +4,12 @@ const path = require("path");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("./models/User");
+const adminRoutes = require("./routes/admin");
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use("/api", adminRoutes);
 
 // Middleware
 app.use(helmet());
