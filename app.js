@@ -50,36 +50,40 @@ app.get("/admin-dashboard", (req, res) => res.sendFile(path.join(__dirname, "pub
 
 // Registration
 app.post("/register", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    const exists = await User.findOne({ email });
-    if (exists) return res.status(400).json({ success: false, message: "Email already registered" });
+  const { name, email, username, password, selectedAccountType, status } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({
+  if (!name || !email || !username || !password) {
+    return res.status(400).json({ success: false, message: "Missing required fields" });
+  }
+
+  try {
+    const existing = await User.findOne({ $or: [{ email }, { username }] });
+    if (existing) return res.status(409).json({ success: false, message: "User already exists" });
+
+    const hashed = await bcrypt.hash(password, 10);
+    const generateAccountNumber = () => Math.floor(Math.random() * 9000000000 + 1000000000).toString();
+
+    const user = new User({
       name,
       email,
-      password: hashedPassword,
-      checking: {
-        accountNumber: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
-        balance: 0,
-        transactions: []
-      },
-      savings: {
-        accountNumber: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
-        balance: 0,
-        transactions: []
+      username,
+      password: hashed,
+      status,
+      accounts: {
+        checking: {
+          accountNumber: generateAccountNumber()
+        },
+        savings: {
+          accountNumber: generateAccountNumber()
+        }
       }
     });
 
-    await newUser.save();
-    const userObj = newUser.toObject();
-    delete userObj.password;
-
-    res.json({ success: true, user: userObj });
+    await user.save();
+    return res.json({ success: true, user });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Registration failed" });
+    res.status(500).json({ success: false, message: "Internal error" });
   }
 });
 

@@ -149,17 +149,15 @@
 </div>
 
 <!-- Account Details Modal -->
-<div class="modal fade" id="accountDetailsModal" tabindex="-1" aria-hidden="true">
+<div id="accountDetailsModal" class="modal fade" tabindex="-1">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content bg-light text-dark">
       <div class="modal-header">
         <h5 class="modal-title">Account Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">
-        <div id="accountDetailsContent">
-          <!-- Dynamic content will be inserted here -->
-        </div>
+      <div class="modal-body" id="accountDetailsContent">
+        <!-- Injected via JS -->
       </div>
     </div>
   </div>
@@ -332,6 +330,25 @@
         </form>
       </div>
     </div>
+  </div>
+</div>
+<!-- Transaction Table -->
+<div class="card p-3 mt-5">
+  <h5 class="mb-3">Transaction History</h5>
+  <div class="table-responsive">
+    <table class="table table-dark table-striped" id="transactionTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Account</th>
+          <th>Type</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS Injected -->
+      </tbody>
+    </table>
   </div>
 </div>
 
