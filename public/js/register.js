@@ -184,34 +184,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnToCredentials = document.getElementById("btnToCredentials");
   const finishBtn = document.getElementById("finishBtn");
 
-  if (btnToPersonalInfo)
-    btnToPersonalInfo.addEventListener("click", (e) => {
-      e.preventDefault();
-      validateAccountSelection();
-    });
+if (btnToPersonalInfo)
+  btnToPersonalInfo.addEventListener("click", (e) => {
+    e.preventDefault();
+    validateAccountSelection();
+  });
 
-  if (btnToReview)
-    btnToReview.addEventListener("click", (e) => {
-      e.preventDefault();
-      validatePersonalInfo();
-    });
+if (btnToReview)
+  btnToReview.addEventListener("click", (e) => {
+    e.preventDefault();
+    validatePersonalInfo();
+  });
 
-  if (btnToEmailVerify)
-    btnToEmailVerify.addEventListener("click", (e) => {
-      e.preventDefault();
-      submitApplication();
-    });
+if (btnToEmailVerify)
+  btnToEmailVerify.addEventListener("click", (e) => {
+    e.preventDefault();
+    submitApplication();
+  });
 
-  if (btnToCredentials)
-    btnToCredentials.addEventListener("click", (e) => {
-      e.preventDefault();
-      showNextSection("credentials");
-    });
-	
-	if (finishBtn) {
+if (btnToCredentials)
+  btnToCredentials.addEventListener("click", (e) => {
+    e.preventDefault();
+    showNextSection("credentials");
+  });
+
+if (finishBtn) {
   finishBtn.addEventListener("click", function (e) {
     e.preventDefault();
     completeSetup();
   });
 }
+});
+
 
