@@ -28,14 +28,12 @@ app.use(
       scriptSrc: [
         "'self'",
         "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com",
-        "'unsafe-inline'" // optional fallback, see below
+        "https://cdnjs.cloudflare.com"
       ],
       styleSrc: [
         "'self'",
         "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com",
-        "'unsafe-inline'" // only if you have inline CSS
+        "https://cdnjs.cloudflare.com"
       ],
       fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
       imgSrc: ["'self'", "data:"]
