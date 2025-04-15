@@ -176,3 +176,13 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.setItem('signupProgress', JSON.stringify(progress));
   }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const continueBtn = document.getElementById("continueBtn");
+  if (continueBtn) {
+    continueBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      validateAccountSelection();
+    });
+  }
+});
