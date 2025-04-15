@@ -258,21 +258,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
     <script>
-        // Ensure dropdown works with Bootstrap 5
-        const dropdown = new bootstrap.Dropdown(document.getElementById('dropdownMenuButton'));
+  // Dropdown activation
+  const dropdown = new bootstrap.Dropdown(document.getElementById('dropdownMenuButton'));
 
-        // Admin PIN Modal
-        document.getElementById('adminOption').addEventListener('click', function(e) {
-            e.preventDefault();
-            new bootstrap.Modal(document.getElementById('adminPinModal')).show();
-        });
+  // Admin PIN modal logic
+  document.getElementById('adminOption').addEventListener('click', function (e) {
+    e.preventDefault();
+    new bootstrap.Modal(document.getElementById('adminPinModal')).show();
+  });
 
-        document.getElementById("loginForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
+  document.getElementById('submitPin').addEventListener('click', function () {
+    const pinInput = document.getElementById('adminPin');
+    if (pinInput.value === '123456789') {
+      window.location.href = '/admin-dashboard';
+    } else {
+      pinInput.classList.add('is-invalid');
+    }
+  });
 
-      const email = document.getElementById("usernameInput").value.trim();
-      const password = document.getElementById("passwordInput").value;
+  // User login logic
+  document.getElementById("loginForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const email = document.getElementById("usernameInput").value.trim();
+    const password = document.getElementById("passwordInput").value;
 
+    try {
       const response = await fetch("/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -287,67 +297,27 @@
       } else {
         alert(data.message || "Login failed");
       }
-    });
-			
-        .then(res => {
-        if (!res.ok) throw new Error('Login failed');
-        return res.json();
-        })
-        .then(data => {
-         if (data.success) {
-      localStorage.setItem('loggedInUser', JSON.stringify(data.user));
-      window.location.href = '/user-dashboard';
-    } else {
-      alert('Invalid email or password!');
-    }
-  })
-  .catch(err => {
-    console.error('Login error:', err);
-    alert('Login failed. Please try again.');
-  });
-});
-
-// Update admin PIN handler
-  document.getElementById('adminOption').addEventListener('click', function(e) {
-    e.preventDefault();
-    new bootstrap.Modal(document.getElementById('adminPinModal')).show();
-  });
-
-  document.getElementById('submitPin').addEventListener('click', function() {
-    const pinInput = document.getElementById('adminPin');
-    if (pinInput.value === '123456789') {
-      window.location.href = '/admin-dashboard';
-    } else {
-      pinInput.classList.add('is-invalid');
+    } catch (err) {
+      alert("Login failed. Please try again.");
+      console.error(err);
     }
   });
-        function redirectToDashboard(path) {
-            const submitBtn = document.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = '<div class="spinner-border spinner-border-sm"></div> Signing in...';
-            setTimeout(() => window.location.href = path, 1500);
-        }
 
-        function showLoginError() {
-            document.getElementById('usernameInput').classList.add('is-invalid');
-            document.getElementById('passwordInput').classList.add('is-invalid');
-            alert('Invalid credentials');
-        }
+  // Toggle password visibility
+  function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('passwordInput');
+    const toggleIcon = document.querySelector('.password-toggle');
 
-        // Password Visibility Toggle
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('passwordInput');
-            const toggleIcon = document.querySelector('.password-toggle');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            }
-        }
-    </script>
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      toggleIcon.classList.remove('fa-eye-slash');
+      toggleIcon.classList.add('fa-eye');
+    } else {
+      passwordInput.type = 'password';
+      toggleIcon.classList.remove('fa-eye');
+      toggleIcon.classList.add('fa-eye-slash');
+    }
+  }
+</script>
 </body>
 </html>
