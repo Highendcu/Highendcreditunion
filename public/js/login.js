@@ -1,4 +1,3 @@
-// Replace the existing verifyPinBtn code with:
 document.addEventListener("DOMContentLoaded", function () {
   const staffOnlyBtn = document.getElementById("staffOnlyBtn");
   const staffPinModal = new bootstrap.Modal('#staffPinModal');
@@ -21,9 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
 
-const loginForm = document.getElementById("loginForm");
+  const loginForm = document.getElementById("loginForm");
 
   if (loginForm) {
     loginForm.addEventListener("submit", async function (e) {
