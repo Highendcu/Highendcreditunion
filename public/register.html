@@ -662,6 +662,7 @@
     localStorage.setItem('signupProgress', JSON.stringify(progress));
   }
 
+  document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.account-card').forEach(card => {
     card.addEventListener('click', function () {
       this.classList.toggle('selected');
@@ -670,6 +671,7 @@
       saveProgress();
     });
   });
+});
 </script>
 </body>
 </html>
