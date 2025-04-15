@@ -32,11 +32,14 @@ app.use(
       ],
       styleSrc: [
         "'self'",
+        "'unsafe-inline'", // Remove in production
         "https://cdn.jsdelivr.net",
         "https://cdnjs.cloudflare.com"
       ],
       fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-      imgSrc: ["'self'", "data:"]
+      imgSrc: ["'self'", "data:"],
+      objectSrc: ["'none'"],
+      formAction: ["'self'"]
     }
   })
 );
@@ -62,12 +65,12 @@ app.get("/user-dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "user-dashboard.html"));
 });
 
-app.get("/views/admin-dashboard.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "admin-dashboard.html"));
+app.get("/admin-dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-dashboard.html"));
 });
 
-app.use("/api/users", require("./routes/users"));
-app.use('/views', express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Register a new user
 app.post("/register", async (req, res) => {
@@ -211,4 +214,15 @@ app.use("/api/admin", require("./routes/admin"));
 // Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+});
+
+// Add PIN verification endpoint
+app.post("/api/verify-pin", (req, res) => {
+    const { pin } = req.body;
+    // Implement proper PIN validation logic
+    if(pin === process.env.ADMIN_PIN) {
+        res.json({ valid: true });
+    } else {
+        res.status(401).json({ valid: false });
+    }
 });

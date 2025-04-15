@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnToReview = document.getElementById("btnToReview");
   const btnToEmailVerify = document.getElementById("btnToEmailVerify");
   const btnToCredentials = document.getElementById("btnToCredentials");
+  const finishBtn = document.getElementById("finishBtn");
 
   if (btnToPersonalInfo)
     btnToPersonalInfo.addEventListener("click", (e) => {
@@ -206,5 +207,11 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       showNextSection("credentials");
     });
-});
+	
+	if (finishBtn) {
+  finishBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    completeSetup();
+  });
+}
 
