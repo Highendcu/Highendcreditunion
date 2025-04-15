@@ -2,650 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>User Dashboard - High End Credit Union</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-  <link rel="stylesheet" href="/styles/main.css"/>
-  <style>
-    :root {
-      --primary-blue: #00447C;
-      --secondary-blue: #0066A1;
-      --accent-gold: #C5A047;
-      --off-white: #F8F9FC;
-      --slate-gray: #4A5C6C;
-    }
-    body {
-      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-      min-height: 100vh;
-      color: var(--off-white);
-      padding: 2rem;
-    }
-    .navbar {
-      background-color: var(--off-white);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      margin-bottom: 2rem;
-    }
-    .brand-title {
-      color: var(--primary-blue) !important;
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
-    .motto {
-      color: var(--secondary-blue) !important;
-      font-style: italic;
-      font-size: 0.9rem;
-    }
-    .logout-btn {
-      background-color: var(--accent-gold);
-      color: var(--primary-blue);
-      transition: all 0.3s ease;
-    }
-    .logout-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(197, 160, 71, 0.3);
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      backdrop-filter: blur(10px);
-      margin-bottom: 1.5rem;
-    }
-    .account-buttons .btn {
-      margin: 0.3rem;
-      flex: 1 1 160px;
-    }
-    .transaction-table {
-      background: rgba(255, 255, 255, 0.05);
-    }
-    .balance {
-      font-size: 1.4rem;
-      font-weight: 500;
-    }
-    .modal-content {
-      background: var(--off-white);
-      color: var(--primary-blue);
-    }
-    .success-popup {
-      background: var(--off-white);
-      color: var(--primary-blue);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-      border-radius: 12px;
-    }
-    .account-card {
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .account-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-    .bottom-links {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 2rem;
-      margin-top: 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-    }
-    .bottom-links h5 {
-      color: var(--accent-gold);
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--accent-gold);
-    }
-    .bottom-links p {
-      margin: 0.5rem 0;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .bottom-links p:hover {
-      color: var(--accent-gold);
-    }
-    .pagination-controls {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 1rem;
-    }
-    @media (max-width: 768px) {
-      body {
-        padding: 1rem;
-      }
-      .account-buttons .btn {
-        flex: 1 1 100%;
-      }
-    }
-	</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>High End Credit Union Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/user-dashboard.css" />
 </head>
-<body>
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand brand-title" href="#">High End Credit Union</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="login.html">Log Out</a>
-        </li>
-      </ul>
+<body class="bg-dark text-white">
+
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="text-center">Welcome to High End Credit Union</h1>
+      </div>
     </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card bg-secondary account-card" data-bs-toggle="modal" data-bs-target="#checkingModal">
+          <div class="card-body">
+            <h5 class="card-title">Checking Account</h5>
+            <p class="display-6" id="checking-balance">$0.00</p>
+            <small class="text-muted" id="checking-account-number">•••• 9472</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card bg-secondary account-card" data-bs-toggle="modal" data-bs-target="#savingsModal">
+          <div class="card-body">
+            <h5 class="card-title">Savings Account</h5>
+            <p class="display-6" id="savings-balance">$0.00</p>
+            <small class="text-muted" id="savings-account-number">•••• 8749</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-secondary mb-4">
+      <div class="card-header">
+        <h5>Transaction History</h5>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-dark table-striped m-0">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Account</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody id="transactionTable">
+            <!-- Injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Checking Modal -->
+    <div class="modal fade" id="checkingModal" tabindex="-1" aria-labelledby="checkingModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header">
+            <h5 class="modal-title" id="checkingModalLabel">Checking Account Details</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="checkingDetails">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Savings Modal -->
+    <div class="modal fade" id="savingsModal" tabindex="-1" aria-labelledby="savingsModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header">
+            <h5 class="modal-title" id="savingsModalLabel">Savings Account Details</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="savingsDetails">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Footer Links -->
+    <footer class="mt-5 pt-4 border-top">
+      <div class="row text-white">
+        <div class="col-md-3 mb-3">
+          <h5>Banking Services</h5>
+          <ul class="list-unstyled">
+            <li>Checking Accounts</li>
+            <li>Savings Accounts</li>
+            <li>Credit Cards</li>
+            <li>Loans</li>
+            <li>Mortgages</li>
+          </ul>
+        </div>
+        <div class="col-md-3 mb-3">
+          <h5>Digital Banking</h5>
+          <ul class="list-unstyled">
+            <li>Mobile Banking</li>
+            <li>Online Bill Pay</li>
+            <li>Zelle Payments</li>
+            <li>Wire Transfers</li>
+            <li>Account Alerts</li>
+          </ul>
+        </div>
+        <div class="col-md-2 mb-3">
+          <h5>About Us</h5>
+          <ul class="list-unstyled">
+            <li>Our History</li>
+            <li>Leadership</li>
+            <li>Careers</li>
+            <li>Investor Relations</li>
+            <li>Community</li>
+          </ul>
+        </div>
+        <div class="col-md-2 mb-3">
+          <h5>Support</h5>
+          <ul class="list-unstyled">
+            <li>Contact Us</li>
+            <li>Branch Locator</li>
+            <li>ATM Network</li>
+            <li>FAQs</li>
+            <li>Security Center</li>
+          </ul>
+        </div>
+        <div class="col-md-2 mb-3">
+          <h5>Legal</h5>
+          <ul class="list-unstyled">
+            <li>Privacy Policy</li>
+            <li>Terms of Service</li>
+            <li>Disclosures</li>
+            <li>Accessibility</li>
+            <li>Regulatory Info</li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
   </div>
-</nav>
 
-<!-- Main Content -->
-<div class="container mt-4">
-  <div class="row g-4">
-    <!-- Left Column -->
-    <div class="col-lg-8">
-      <!-- Account Overview -->
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title mb-4">Account Overview</h4>
-          <div class="row mb-4">
-            <div class="col-md-6">
-              <p class="balance text-primary">$0.00</p>
-              <small>Current Balance</small>
-            </div>
-            <div class="col-md-6">
-              <p class="balance text-muted">$0.00</p>
-              <small>Ledger Balance</small>
-            </div>
-          </div>
-          <div class="account-buttons d-flex flex-wrap gap-2">
-            <button class="btn btn-outline-light" id="accountDetailsBtn" data-bs-toggle="modal" data-bs-target="#accountDetailsModal">
-              Account Details
-            </button>
-            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#zelleTransferModal">
-              Zelle Transfer
-            </button>
-            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#wireTransferModal">
-              Wire Transfer
-            </button>
-            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#internalTransferModal">
-              Internal Transfer
-            </button>
-            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#billPayModal">
-              Bill Pay
-            </button>
-            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#externalTransferModal">
-              External Transfer
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Accounts Summary -->
-      <div class="row g-4">
-        <div class="col-md-6">
-          <div class="card h-100 account-card" onclick="showAccountModal('checking')">
-            <div class="card-body">
-              <h5 class="card-title mb-4">Checking Account</h5>
-              <p class="display-6 mb-1">$0.00</p>
-              <small class="text-muted" id="checking-account-number">•••• 9472</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card h-100 account-card" onclick="showAccountModal('savings')">
-            <div class="card-body">
-              <h5 class="card-title mb-4">Savings Account</h5>
-              <p class="display-6 mb-1">$0.00</p>
-              <small class="text-muted" id="savings-account-number">•••• 8749</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Column -->
-    <div class="col-lg-4">
-      <!-- Credit Score -->
-      <div class="card bg-primary text-white">
-        <div class="card-body">
-          <div class="d-flex align-items-center mb-3">
-            <i class="fas fa-chart-line fa-2x me-3"></i>
-            <h5 class="card-title mb-0">Credit Score</h5>
-          </div>
-          <div class="progress mb-3" style="height: 8px;">
-            <div class="progress-bar bg-warning" role="progressbar" style="width: 82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <p class="mb-0">Excellent (740) - Eligible for premium rates</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Account Details Modal -->
-<div class="modal fade" id="accountDetailsModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Account Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div id="accountDetailsContent">
-          <!-- Dynamic content will be inserted here -->
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Zelle Transfer Modal -->
-<div class="modal fade" id="zelleTransferModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Zelle Transfer</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label class="form-label">Recipient Email or Phone</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Amount</label>
-            <input type="number" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">From Account</label>
-            <select class="form-select">
-              <option>Checking</option>
-              <option>Savings</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary">Send Money</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Wire Transfer Modal -->
-<div class="modal fade" id="wireTransferModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Wire Transfer</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label class="form-label">Recipient Name</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Bank Name</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Account Number</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Routing Number</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Amount</label>
-            <input type="number" class="form-control" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Initiate Wire</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Internal Transfer Modal -->
-<div class="modal fade" id="internalTransferModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Internal Transfer</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="internalTransferForm">
-          <div class="mb-3">
-            <label class="form-label">From Account</label>
-            <select class="form-select" name="fromAccount">
-              <option value="checking">Checking</option>
-              <option value="savings">Savings</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">To Account</label>
-            <select class="form-select" name="toAccount">
-              <option value="checking">Checking</option>
-              <option value="savings">Savings</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Amount</label>
-            <input type="number" class="form-control" name="amount" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Transfer</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Bill Pay Modal -->
-<div class="modal fade" id="billPayModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Bill Pay</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label class="form-label">Payee Name</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Account Number</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Amount</label>
-            <input type="number" class="form-control" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Pay Bill</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- External Transfer Modal -->
-<div class="modal fade" id="externalTransferModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">External Transfer</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="externalTransferForm">
-          <div class="mb-3">
-            <label class="form-label">Recipient Name</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Bank Name</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Account Number</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Routing Number</label>
-            <input type="text" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Amount</label>
-            <input type="number" class="form-control" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Transfer</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-// ✅ Ensure this is defined before use
-let bankData = JSON.parse(localStorage.getItem('bankData') || '{}');
-const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
-
-if (!loggedInUser?.email) {
-  window.location.href = 'login.html';
-}
-
-// ✅ Create account if not already present
-if (!bankData[loggedInUser.email]) {
-  bankData[loggedInUser.email] = {
-    checking: {
-      number: generateRandomAccountNumber(),
-      balance: 0,
-      transactions: []
-    },
-    savings: {
-      number: generateRandomAccountNumber(),
-      balance: 0,
-      transactions: []
-    }
-  };
-  localStorage.setItem('bankData', JSON.stringify(bankData));
-}
-
-const accountData = bankData[loggedInUser.email];
-
-// ✅ Update displayed account balances
-function updateDisplay() {
-  document.querySelector('#checking-account-number').textContent = `•••• ${accountData.checking.number.slice(-4)}`;
-  document.querySelector('#savings-account-number').textContent = `•••• ${accountData.savings.number.slice(-4)}`;
-  document.querySelector('#checking-balance').textContent = `$${accountData.checking.balance.toFixed(2)}`;
-  document.querySelector('#savings-balance').textContent = `$${accountData.savings.balance.toFixed(2)}`;
-
-  const total = accountData.checking.balance + accountData.savings.balance;
-  document.querySelectorAll('.balance').forEach(el => {
-    el.textContent = `$${total.toFixed(2)}`;
-  });
-
-  const transactionList = document.querySelector('#transaction-list');
-  transactionList.innerHTML = '';
-  const allTransactions = accountData.checking.transactions.concat(accountData.savings.transactions);
-  allTransactions.slice(0, 10).forEach(tx => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${tx.date}</td>
-      <td>${tx.description}</td>
-      <td>${tx.amount < 0 ? '-' : ''}$${Math.abs(tx.amount).toFixed(2)}</td>
-    `;
-    transactionList.appendChild(row);
-  });
-}
-
-function generateRandomAccountNumber() {
-  return Math.floor(Math.random() * 9000000000 + 1000000000).toString();
-}
-
-const MongoStore = require('connect-mongo');
-app.use(session({
-  store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/creditunion' }),
-  // ... other session options
-}));
-
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ server });
-
-wss.on('connection', (ws) => {
-  ws.on('message', (message) => {
-    // Handle real-time updates
-  });
-});
-
-document.getElementById('internalTransferForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const from = this.fromAccount.value;
-  const to = this.toAccount.value;
-  const amount = parseFloat(this.amount.value);
-
-  if (from === to) return alert('Cannot transfer to the same account.');
-  if (accountData[from].balance < amount) return alert('Insufficient funds.');
-
-  const date = new Date().toLocaleString();
-  accountData[from].balance -= amount;
-  accountData[to].balance += amount;
-
-  accountData[from].transactions.unshift({
-    date,
-    description: `Transfer to ${to}`,
-    amount: -amount
-  });
-  accountData[to].transactions.unshift({
-    date,
-    description: `Transfer from ${from}`,
-    amount: amount
-  });
-
-  saveBankData();
-  updateDisplay();
-  alert('Transfer successful!');
-});
-
-function showAccountModal(accountType) {
-  const account = accountData[accountType];
-  const modalContent = `
-    <h5>${accountType.charAt(0).toUpperCase() + accountType.slice(1)} Account</h5>
-    <p>Account Number: ${account.number}</p>
-    <p>Balance: $${account.balance.toFixed(2)}</p>
-    <h6>Recent Transactions:</h6>
-    <ul>
-      ${account.transactions.slice(0, 5).map(tx =>
-        `<li>${tx.date} - ${tx.description}: $${tx.amount.toFixed(2)}</li>`
-      ).join('')}
-    </ul>
-  `;
-  document.getElementById('accountDetailsContent').innerHTML = modalContent;
-  new bootstrap.Modal(document.getElementById('accountDetailsModal')).show();
-}
-
-// ✅ Show current user details in Account Details Modal
-document.addEventListener('DOMContentLoaded', () => {
-  const detailsBtn = document.getElementById('accountDetailsBtn');
-  const detailsBox = document.getElementById('accountDetailsContent');
-
-  detailsBtn.addEventListener('click', () => {
-    const userAccounts = bankData[loggedInUser.email];
-    if (!userAccounts) {
-      detailsBox.innerHTML = '<p class="text-danger">Account information not found.</p>';
-      return;
-    }
-
-    detailsBox.innerHTML = `
-      <p><strong>Name:</strong> ${loggedInUser.name}</p>
-      <p><strong>Email:</strong> ${loggedInUser.email}</p>
-      <hr>
-      <p><strong>Primary Account Type:</strong> ${loggedInUser.selectedAccountType?.replace(/-/g, ' ') || 'N/A'}</p>
-      <hr>
-      <p><strong>🔹 Checking Account Number:</strong> ${userAccounts.checking.number}</p>
-      <p><strong>Balance:</strong> $${userAccounts.checking.balance.toFixed(2)}</p>
-      <hr>
-      <p><strong>🔸 Savings Account Number:</strong> ${userAccounts.savings.number}</p>
-      <p><strong>Balance:</strong> $${userAccounts.savings.balance.toFixed(2)}</p>
-    `;
-  });
-
-  updateDisplay();
-});
-</script>
-
-<!-- Bottom Links Section -->
-<div class="container">
-    <div class="bottom-links">
-        <div>
-            <h5>Banking Services</h5>
-            <p>Checking Accounts</p>
-            <p>Savings Accounts</p>
-            <p>Credit Cards</p>
-            <p>Loans</p>
-            <p>Mortgages</p>
-        </div>
-        <div>
-            <h5>Digital Banking</h5>
-            <p>Mobile Banking</p>
-            <p>Online Bill Pay</p>
-            <p>Zelle Payments</p>
-            <p>Wire Transfers</p>
-            <p>Account Alerts</p>
-        </div>
-        <div>
-            <h5>About Us</h5>
-            <p>Our History</p>
-            <p>Leadership</p>
-            <p>Careers</p>
-            <p>Investor Relations</p>
-            <p>Community</p>
-        </div>
-        <div>
-            <h5>Support</h5>
-            <p>Contact Us</p>
-            <p>Branch Locator</p>
-            <p>ATM Network</p>
-            <p>FAQs</p>
-            <p>Security Center</p>
-        </div>
-        <div>
-            <h5>Legal</h5>
-            <p>Privacy Policy</p>
-            <p>Terms of Service</p>
-            <p>Disclosures</p>
-            <p>Accessibility</p>
-            <p>Regulatory Info</p>
-        </div>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
-  const checkingSection = document.getElementById("checkingBalance");
-  const savingsSection = document.getElementById("savingsBalance");
-  const transactionSection = document.getElementById("transactionHistory");
-
-  function fetchUserData() {
-    if (!user || !user.email) return;
-
-    fetch(`/api/user/by-email/${user.email}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && data.user) {
-          const { checking, savings } = data.user.accounts;
-
-          if (checkingSection) {
-            checkingSection.textContent = `$${checking.balance.toFixed(2)}`;
-          }
-
-          if (savingsSection) {
-            savingsSection.textContent = `$${savings.balance.toFixed(2)}`;
-          }
-
-          if (transactionSection && checking.transactions) {
-            transactionSection.innerHTML = checking.transactions.slice(-5).map(t =>
-              `<div><strong>${t.type}:</strong> $${t.amount} - ${t.date}</div>`
-            ).join('');
-          }
-        }
-      });
-  }
-
-  fetchUserData();
-});
-</script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>
