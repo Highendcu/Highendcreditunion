@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
     verifyPinBtn.addEventListener("click", function () {
       const pin = document.getElementById("staffPin").value;
       if (pin === "090909090") {
-        window.location.href = "/admin-dashboard.html";
-      } else {
-        document.getElementById("staffPin").classList.add("is-invalid");
-      }
+         localStorage.setItem("isAdmin", "true");
+         window.location.href = "/admin-dashboard.html";
+       }
+
     });
   }
 

@@ -1,7 +1,5 @@
-// admin.js (Full Fixed Version, Synced with admin-dashboard.html + admin.css)
-
-// Ensure admin session is valid
-if (!localStorage.getItem("adminSession") || !JSON.parse(localStorage.getItem("adminSession")).valid) {
+// Ensure only admins access this page
+if (localStorage.getItem("isAdmin") !== "true") {
   window.location.href = "/index.html";
 }
 
