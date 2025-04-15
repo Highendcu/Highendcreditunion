@@ -62,6 +62,8 @@ app.get("/user-dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "user-dashboard.html"));
 });
 
+app.use("/api/users", require("./routes/users"));
+
 // Register a new user
 app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;

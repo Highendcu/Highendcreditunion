@@ -1,26 +1,23 @@
-
-const mongoose = require('mongoose');
-
-const accountSchema = new mongoose.Schema({
-  accountNumber: String,
-  balance: { type: Number, default: 0 },
-  transactions: [
-    {
-      type: { type: String },
-      amount: Number,
-      description: String,
-      date: { type: Date, default: Date.now }
-    }
-  ]
-});
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
+  username: String,
   password: String,
-  status: { type: String, default: 'active' },
-  checking: accountSchema,
-  savings: accountSchema
+  status: String,
+  accounts: {
+    checking: {
+      number: String,
+      balance: Number,
+      transactions: Array
+    },
+    savings: {
+      number: String,
+      balance: Number,
+      transactions: Array
+    }
+  }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
