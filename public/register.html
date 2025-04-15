@@ -282,7 +282,7 @@
             <div class="col-md-6 mb-3">
               <label class="form-label">Social Security Number (SSN) *</label>
               <input type="text" class="form-control" id="ssn" pattern="\d{3}-\d{2}-\d{4}" placeholder="XXX-XX-XXXX" required>
-              <div class="invalid-feedback">Valid SSN required (XXX-XX-XXXX)</div>
+              <div class="invalid-feedback">Valid SSN required ()</div>
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label">Date of Birth *</label>
@@ -360,7 +360,7 @@
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label">Phone Number *</label>
-              <input type="tel" class="form-control" id="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="XXX-XXX-XXXX" required>
+              <input type="tel" class="form-control" id="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="" required>
               <div class="invalid-feedback">Please enter a valid phone number</div>
             </div>
           </div>
@@ -419,18 +419,17 @@
 
   <!-- Step 5: Credentials Setup -->
   <div class="form-section" id="credentials">
-    <h2 class="auth-header text-center">Create Login Credentials</h2>
+    <h2 class="auth-header text-center">Create Credentials</h2>
     <form id="credentialForm" novalidate>
       <div class="mb-3">
         <label class="form-label">Username *</label>
         <input type="text" class="form-control" id="username" required>
-              <div class="invalid-feedback">Please choose a username</div>
+              <div class="invalid-feedback">Choose a username</div>
               </div>
               <div class="mb-3">
                 <label class="form-label">Password *</label>
                 <input type="password" class="form-control" id="password" required>
                <div class="invalid-feedback">
-                Password must be at least 8 characters
                 </div>
              </div>
           </div>
