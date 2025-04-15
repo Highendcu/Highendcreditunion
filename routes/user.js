@@ -47,4 +47,29 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Get user transactions
+router.get("/:id/transactions", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const checking = user.accounts?.checking?.transactions || [];
+    const savings = user.accounts?.savings?.transactions || [];
+
+    const combined = [
+      ...checking.map(tx => ({ ...tx, account: "Checking" })),
+      ...savings.map(tx => ({ ...tx, account: "Savings" }))
+    ];
+
+    // Sort by date descending
+    combined.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    res.json(combined);
+
+  } catch (err) {
+    console.error("Transaction Fetch Error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 module.exports = router;

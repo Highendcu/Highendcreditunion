@@ -4,15 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Example dynamic content
   if (checkingModal)
-    checkingModal.innerHTML = `<p>Account #: 1234567890<br>Balance: $500.00</p>`;
+    checkingModal.innerHTML = `<p>Account #: 1234567890<br>Balance: $0.00</p>`;
   if (savingsModal)
-    savingsModal.innerHTML = `<p>Account #: 0987654321<br>Balance: $800.00</p>`;
+    savingsModal.innerHTML = `<p>Account #: 0987654321<br>Balance: $0.00</p>`;
 
   // Populate transaction table
-  const transactions = [
-    { date: '2025-04-15', account: 'Checking', type: 'Deposit', amount: '$200.00', desc: 'Initial deposit' },
-    { date: '2025-04-16', account: 'Savings', type: 'Transfer', amount: '$100.00', desc: 'Transfer to savings' }
-  ];
+  const transactions = [];
   const tbody = document.getElementById('transactionTable');
   if (tbody) {
     transactions.forEach(t => {
@@ -31,7 +28,36 @@ document.addEventListener('DOMContentLoaded', () => {
       const content = `
         <p><strong>Account Type:</strong> ${type}</p>
         <p><strong>Account Number:</strong> ${type === 'Checking' ? '1234567890' : '0987654321'}</p>
-        <p><strong>Balance:</strong> ${type === 'Checking' ? '$500.00' : '$800.00'}</p>
+        <p><strong>Balance:</strong> ${type === 'Checking' ? '$0.00' : '$0.00document.addEventListener("DOMContentLoaded", async () => {
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (!user || !user.id) return;
+
+  const transactionTable = document.getElementById("transactionTable");
+
+  try {
+    const res = await fetch(`/api/users/${user.id}/transactions`);
+    const data = await res.json();
+
+    transactionTable.innerHTML = "";
+
+    data.forEach(t => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${new Date(t.date).toLocaleDateString()}</td>
+        <td>${t.account}</td>
+        <td>${t.type || "Transfer"}</td>
+        <td>${t.amount ? `$${parseFloat(t.amount).toFixed(2)}` : "$0.00"}</td>
+        <td>${t.description || "-"}</td>
+      `;
+      transactionTable.appendChild(row);
+    });
+
+  } catch (err) {
+    console.error("Failed to fetch transactions:", err);
+    transactionTable.innerHTML = `<tr><td colspan="5">Error loading transactions.</td></tr>`;
+  }
+});
+'}</p>
       `;
       document.getElementById("accountDetailsContent").innerHTML = content;
       modal.show();
