@@ -609,5 +609,43 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  const checkingSection = document.getElementById("checkingBalance");
+  const savingsSection = document.getElementById("savingsBalance");
+  const transactionSection = document.getElementById("transactionHistory");
+
+  function fetchUserData() {
+    if (!user || !user.email) return;
+
+    fetch(`/api/user/by-email/${user.email}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.user) {
+          const { checking, savings } = data.user.accounts;
+
+          if (checkingSection) {
+            checkingSection.textContent = `$${checking.balance.toFixed(2)}`;
+          }
+
+          if (savingsSection) {
+            savingsSection.textContent = `$${savings.balance.toFixed(2)}`;
+          }
+
+          if (transactionSection && checking.transactions) {
+            transactionSection.innerHTML = checking.transactions.slice(-5).map(t =>
+              `<div><strong>${t.type}:</strong> $${t.amount} - ${t.date}</div>`
+            ).join('');
+          }
+        }
+      });
+  }
+
+  fetchUserData();
+});
+</script>
+
 </body>
 </html>

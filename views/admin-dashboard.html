@@ -1,14 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Dashboard</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+<style>
 	.card { margin: 20px 0; }
     .card-header { background-color: #f3f4f6; padding: 10px; }
     .card-body { padding: 15px; }
@@ -65,277 +66,220 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Buttons -->
-    <div class="d-flex justify-content-between mb-4">
-        <a href="index.html" class="btn btn-admin">
-            <i class="fas fa-home me-2"></i>Home
+<!-- Navigation Buttons -->
+<div class="d-flex justify-content-between mb-4">
+<a class="btn btn-admin" href="index.html">
+<i class="fas fa-home me-2"></i>Home
         </a>
-        <a href="index.html" class="btn btn-admin">
-            <i class="fas fa-sign-out-alt me-2"></i>Log Out
+<a class="btn btn-admin" href="index.html">
+<i class="fas fa-sign-out-alt me-2"></i>Log Out
         </a>
-    </div>
-	<div class="container mx-auto p-5">
-    <h1 class="text-3xl font-bold text-center">Admin Dashboard</h1>
-
-       <!-- Manage Users -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="text-xl font-semibold">Manage Users</h2>
-      </div>
-      <div class="card-body">
-        <table class="table-auto w-full text-left text-white">
-          <thead>
-            <tr>
-              <th class="px-4 py-2">Name</th>
-              <th class="px-4 py-2">Email</th>
-              <th class="px-4 py-2">Account Numbers</th>
-              <th class="px-4 py-2">Balances</th>
-              <th class="px-4 py-2">Status</th>
-              <th class="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="user-table">
-        <!-- Dynamic user rows will be added here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-
-    <!-- User Actions -->
-    <div id="user-actions" class="card mt-4">
-       <div class="card-header">
-         <h2 class="text-xl font-semibold">User Actions</h2>
-        </div>
-        <div class="card-body">
-          <form id="user-action-form">
-            <div class="mb-3">
-              <label class="form-label">Select Action</label>
-              <select id="action" class="form-select">
-                <option value="update-balance">Update User Balance</option>
-                <option value="change-password">Change User Password</option>
-                <option value="suspend">Suspend/Unsuspend User</option>
-              </select>
-            </div>
-
-            <div class="mb-3" id="account-fields">
-              <label class="form-label">Account Number</label>
-              <input type="text" id="account-number-action" class="form-control" required>
-
-              <label class="form-label mt-2">Account Type</label>
-              <select id="account-type-action" class="form-select">
-                <option value="checking">Checking</option>
-                <option value="savings">Savings</option>
-              </select>
-            </div>
-
-            <div class="mb-3 d-none" id="balance-field">
-              <label class="form-label">Amount (+ or -)</label>
-             <input type="number" id="balance-amount" class="form-control">
-            </div>
-
-            <div class="mb-3 d-none" id="password-field">
-              <label class="form-label">New Password</label>
-              <input type="password" id="new-password" class="form-control">
-            </div>
-
-            <div class="mb-3 d-none" id="user-id-field">
-              <label class="form-label">User ID</label>
-              <input type="text" id="user-id" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Execute Action</button>
-          </form>
-        </div>
-    </div>
-
-
-    <!-- Admin Dashboard Container -->
-    <div class="dashboard-container">
-        <!-- Admin Dashboard Card -->
-        <div class="dashboard-card">
-            <h2 class="dashboard-header text-center">Administrator Dashboard</h2>
-            <div class="balance-info text-center">
-                System Balance: <br><strong>$2,458,763,829.47</strong>
-            </div>
-            
-            <!-- Fund Transfer Section -->
-            <div class="card bg-transparent border-secondary mb-4">
-                <div class="card-body">
-                    <h5 class="card-title text-accent">Fund Transfer System</h5>
-                    <form id="transferForm">
-                        <div class="mb-3">
-                            <label class="form-label">Account Number</label>
-                            <input type="text" class="form-control bg-transparent text-white" id="accountNumber" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Account Holder Name</label>
-                            <input type="text" class="form-control bg-transparent text-white" id="accountName" required>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Account Type</label>
-                                <select class="form-select bg-transparent text-white" id="accountType">
-                                    <option value="checking">Checking</option>
-                                    <option value="savings">Savings</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Transfer Amount</label>
-                                <input type="number" class="form-control bg-transparent text-white" id="transferAmount" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Transfer Memo</label>
-                            <textarea class="form-control bg-transparent text-white" rows="2" id="transferMemo"></textarea>
-                        </div>
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-admin">
-                                <i class="fas fa-exchange-alt me-2"></i> Execute Transfer
+</div>
+<div class="container mx-auto p-5">
+<h1 class="text-3xl font-bold text-center">Admin Dashboard</h1>
+<!-- Manage Users -->
+<div class="card">
+<div class="card-header">
+<h2 class="text-xl font-semibold">Manage Users</h2>
+</div>
+<div class="card-body">
+<table class="table-auto w-full text-left text-white">
+<thead>
+<tr>
+<th class="px-4 py-2">Name</th>
+<th class="px-4 py-2">Email</th>
+<th class="px-4 py-2">Account Numbers</th>
+<th class="px-4 py-2">Balances</th>
+<th class="px-4 py-2">Status</th>
+<th class="px-4 py-2">Actions</th>
+</tr>
+</thead>
+<tbody id="user-table">
+<!-- Dynamic user rows will be added here -->
+</tbody>
+</table>
+</div>
+</div>
+<!-- User Actions -->
+<div class="card mt-4" id="user-actions">
+<div class="card-header">
+<h2 class="text-xl font-semibold">User Actions</h2>
+</div>
+<div class="card-body">
+<form id="user-action-form"><div class="mb-3"><label class="form-label">Select Action</label><select class="form-select" id="action"><option value="update-balance">Update Balance</option><option value="suspend">Suspend</option><option value="change-password">Change Password</option></select></div><div class="mb-3"><label class="form-label">Account Number</label><input class="form-control" id="account-number-action" required="True" type="text"/></div><div class="mb-3"><label class="form-label">Account Type</label><select class="form-select" id="account-type-action"><option value="checking">Checking</option><option value="savings">Savings</option></select></div><div class="mb-3"><label class="form-label">Amount to Add or Deduct</label><input class="form-control" id="balance-amount" placeholder="Enter amount" type="number"/></div><button class="btn btn-primary" type="submit">Execute Action</button></form>
+</div>
+</div>
+<!-- Admin Dashboard Container -->
+<div class="dashboard-container">
+<!-- Admin Dashboard Card -->
+<div class="dashboard-card">
+<h2 class="dashboard-header text-center">Administrator Dashboard</h2>
+<div class="balance-info text-center">
+                System Balance: <br/><strong>$2,458,763,829.47</strong>
+</div>
+<!-- Fund Transfer Section -->
+<div class="card bg-transparent border-secondary mb-4">
+<div class="card-body">
+<h5 class="card-title text-accent">Fund Transfer System</h5>
+<form id="transferForm">
+<div class="mb-3">
+<label class="form-label">Account Number</label>
+<input class="form-control bg-transparent text-white" id="accountNumber" required="" type="text"/>
+</div>
+<div class="mb-3">
+<label class="form-label">Account Holder Name</label>
+<input class="form-control bg-transparent text-white" id="accountName" required="" type="text"/>
+</div>
+<div class="row">
+<div class="col-md-6 mb-3">
+<label class="form-label">Account Type</label>
+<select class="form-select bg-transparent text-white" id="accountType">
+<option value="checking">Checking</option>
+<option value="savings">Savings</option>
+</select>
+</div>
+<div class="col-md-6 mb-3">
+<label class="form-label">Transfer Amount</label>
+<input class="form-control bg-transparent text-white" id="transferAmount" required="" type="number"/>
+</div>
+</div>
+<div class="mb-3">
+<label class="form-label">Transfer Memo</label>
+<textarea class="form-control bg-transparent text-white" id="transferMemo" rows="2"></textarea>
+</div>
+<div class="d-grid">
+<button class="btn btn-admin" type="submit">
+<i class="fas fa-exchange-alt me-2"></i> Execute Transfer
                             </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Quick Transfer Button -->
-            <div class="d-grid mt-4">
-                <button class="btn btn-admin" data-bs-toggle="modal" data-bs-target="#quickTransferModal">
-                    <i class="fas fa-arrow-right me-2"></i> Quick Transfer
+</div>
+</form>
+</div>
+</div>
+<!-- Quick Transfer Button -->
+<div class="d-grid mt-4">
+<button class="btn btn-admin" data-bs-target="#quickTransferModal" data-bs-toggle="modal">
+<i class="fas fa-arrow-right me-2"></i> Quick Transfer
                 </button>
-            </div>
-        </div>
-
-        <!-- Quick Transfer Modal -->
-        <div class="modal fade" id="quickTransferModal" tabindex="-1" aria-labelledby="quickTransferModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="quickTransferModalLabel">Quick External Transfer</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="externalAccount" class="form-label">External Account Number</label>
-                            <input type="text" class="form-control" id="externalAccount" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="transferAmountQuick" class="form-label">Amount</label>
-                            <input type="number" class="form-control" id="transferAmountQuick" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="transferPin" class="form-label">Enter 4-Digit PIN</label>
-                            <input type="password" class="form-control" id="transferPin" maxlength="4" required>
-                        </div>
-
-                        <div class="d-grid mt-4">
-                            <button type="button" class="btn btn-admin" id="confirmQuickTransfer">
-                                <i class="fas fa-check me-2"></i> Confirm Transfer
+</div>
+</div>
+<!-- Quick Transfer Modal -->
+<div aria-hidden="true" aria-labelledby="quickTransferModalLabel" class="modal fade" id="quickTransferModal" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="quickTransferModalLabel">Quick External Transfer</h5>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3">
+<label class="form-label" for="externalAccount">External Account Number</label>
+<input class="form-control" id="externalAccount" required="" type="text"/>
+</div>
+<div class="mb-3">
+<label class="form-label" for="transferAmountQuick">Amount</label>
+<input class="form-control" id="transferAmountQuick" required="" type="number"/>
+</div>
+<div class="mb-3">
+<label class="form-label" for="transferPin">Enter 4-Digit PIN</label>
+<input class="form-control" id="transferPin" maxlength="4" required="" type="password"/>
+</div>
+<div class="d-grid mt-4">
+<button class="btn btn-admin" id="confirmQuickTransfer" type="button">
+<i class="fas fa-check me-2"></i> Confirm Transfer
                             </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Transactions Card -->
-        <div class="dashboard-card">
-            <h5 class="dashboard-header">Transaction Monitor</h5>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Account</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactionTable">
-                        <!-- Transactions will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="pagination-controls">
-                <button class="btn btn-admin" id="previousPage">Previous</button>
-                <span id="pageInfo">Page 1 of 1</span>
-                <button class="btn btn-admin" id="nextPage">Next</button>
-            </div>
-        </div>
-
-        <!-- Enhanced User Management Card -->
-        <div class="dashboard-card">
-            <h5 class="dashboard-header">User Accounts</h5>
-            <div class="mb-3">
-                <input type="text" class="form-control bg-transparent text-white" id="searchInput" placeholder="Search users...">
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Account</th>
-                            <th>Type</th>
-                            <th>Balance</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTable">
-                        <!-- User data will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom Links Section -->
-    <div class="bottom-links">
-        <div>
-            <h5>Admin Tools</h5>
-            <p>User Management</p>
-            <p>Transaction Audit</p>
-            <p>System Settings</p>
-            <p>Security Controls</p>
-            <p>Reports</p>
-        </div>
-        <div>
-            <h5>Banking Services</h5>
-            <p>Account Management</p>
-            <p>Fund Transfers</p>
-            <p>Transaction Monitoring</p>
-            <p>Fraud Detection</p>
-            <p>Compliance</p>
-        </div>
-        <div>
-            <h5>Support</h5>
-            <p>Admin Documentation</p>
-            <p>System Status</p>
-            <p>Contact Engineers</p>
-            <p>Training Resources</p>
-            <p>Security Protocols</p>
-        </div>
-        <div>
-            <h5>Legal</h5>
-            <p>Privacy Policy</p>
-            <p>Terms of Service</p>
-            <p>Compliance Docs</p>
-            <p>Audit Trails</p>
-            <p>Regulatory Info</p>
-        </div>
-    </div>
-
-    <!-- Scripts -->
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Transactions Card -->
+<div class="dashboard-card">
+<h5 class="dashboard-header">Transaction Monitor</h5>
+<div class="table-responsive">
+<table class="table table-hover">
+<thead>
+<tr>
+<th>Date</th>
+<th>Account</th>
+<th>Type</th>
+<th>Amount</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody id="transactionTable">
+<!-- Transactions will be populated by JavaScript -->
+</tbody>
+</table>
+</div>
+<div class="pagination-controls">
+<button class="btn btn-admin" id="previousPage">Previous</button>
+<span id="pageInfo">Page 1 of 1</span>
+<button class="btn btn-admin" id="nextPage">Next</button>
+</div>
+</div>
+<!-- Enhanced User Management Card -->
+<div class="dashboard-card">
+<h5 class="dashboard-header">User Accounts</h5>
+<div class="mb-3">
+<input class="form-control bg-transparent text-white" id="searchInput" placeholder="Search users..." type="text"/>
+</div>
+<div class="table-responsive">
+<table class="table table-hover">
+<thead>
+<tr>
+<th>Name</th>
+<th>Account</th>
+<th>Type</th>
+<th>Balance</th>
+<th>Email</th>
+</tr>
+</thead>
+<tbody id="userTable">
+<!-- User data will be populated by JavaScript -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Bottom Links Section -->
+<div class="bottom-links">
+<div>
+<h5>Admin Tools</h5>
+<p>User Management</p>
+<p>Transaction Audit</p>
+<p>System Settings</p>
+<p>Security Controls</p>
+<p>Reports</p>
+</div>
+<div>
+<h5>Banking Services</h5>
+<p>Account Management</p>
+<p>Fund Transfers</p>
+<p>Transaction Monitoring</p>
+<p>Fraud Detection</p>
+<p>Compliance</p>
+</div>
+<div>
+<h5>Support</h5>
+<p>Admin Documentation</p>
+<p>System Status</p>
+<p>Contact Engineers</p>
+<p>Training Resources</p>
+<p>Security Protocols</p>
+</div>
+<div>
+<h5>Legal</h5>
+<p>Privacy Policy</p>
+<p>Terms of Service</p>
+<p>Compliance Docs</p>
+<p>Audit Trails</p>
+<p>Regulatory Info</p>
+</div>
+</div>
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/admin.js"></script>
-    <script>
+<script>
         // Simulated system balance stored in localStorage
         const systemBalance = 2458763829.47;
         document.querySelector('.balance-info strong').textContent = `$${systemBalance.toLocaleString()}`;
@@ -687,5 +631,5 @@ document.getElementById('user-action-form').addEventListener('submit', async fun
 		
 		window.onload = fetchUsers;
     </script>
-</body>
+</div></body>
 </html>

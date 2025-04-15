@@ -1,5 +1,5 @@
 const express = require("express");
-const helmet = require("helmet"); // ⬅️ Move helmet up here
+const helmet = require("helmet"); 
 const path = require("path");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
@@ -21,16 +21,27 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
-    styleSrc: ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
-    fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-    imgSrc: ["'self'", "data:"]
-  }
-}));
-
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
+        "'unsafe-inline'" // optional fallback, see below
+      ],
+      styleSrc: [
+        "'self'",
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
+        "'unsafe-inline'" // only if you have inline CSS
+      ],
+      fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+      imgSrc: ["'self'", "data:"]
+    }
+  })
+);
 
 app.use((req, res, next) => {
   if (req.headers["x-forwarded-proto"] !== "https") {
