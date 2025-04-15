@@ -1,0 +1,56 @@
+.card { margin: 20px 0; }
+.card-header { 
+    background-color: #f3f4f6; 
+    padding: 10px; 
+}
+.card-body { padding: 15px; }
+
+body {
+    background-color: #343a40;
+    color: white;
+}
+.btn-admin {
+    background-color: #0062cc;
+    color: white;
+}
+.btn-admin:hover {
+    background-color: #004ba0;
+}
+        .text-accent {
+            color: #ffc107;
+        }
+        .dashboard-container {
+            padding: 20px;
+        }
+        .dashboard-card {
+            background-color: #495057;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .balance-info {
+            font-size: 1.2em;
+        }
+        .bottom-links {
+            background-color: #343a40;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            border-top: 2px solid #ccc;
+        }
+        .bottom-links h5 {
+            color: #ffc107;
+        }
+        .bottom-links div {
+            width: 22%;
+        }
+        .pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .form-control {
+            background-color: #495057;
+            color: white;
+        }
