@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (data.success) {
         localStorage.setItem("loggedInUser", JSON.stringify(data.user));
-        window.location.href = "/user-dashboard";
+        window.location.href = "user-dashboard.html";
       } else {
         alert(data.message || "Login failed");
       }
