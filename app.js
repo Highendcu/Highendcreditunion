@@ -15,17 +15,27 @@ app.use("/api", adminRoutes);
 app.use(helmet());
 app.use(
   helmet.contentSecurityPolicy({
+    useDefaults: true,
     directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
-      fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-      imgSrc: ["'self'", "data:"],
-      objectSrc: ["'none'"],
-      formAction: ["'self'"]
-    }
+      "default-src": ["'self'"],
+      "script-src": [
+        "'self'",
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com"
+      ],
+      "style-src": [
+        "'self'",
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
+        "'unsafe-inline'"
+      ],
+      "font-src": ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+      "img-src": ["'self'", "data:"],
+      "connect-src": ["'self'", "https://highendcreditunion-hyzp.onrender.com"],
+    },
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
